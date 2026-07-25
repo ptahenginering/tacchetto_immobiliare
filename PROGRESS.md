@@ -38,7 +38,7 @@
 | T34 — Admin Statistiche + Impostazioni | ✅ | Statistiche con filtro periodo + export CSV client-side; impostazioni: dati agenzia, stato integrazioni da /admin/system/health, test email, gestione utenti staff (solo admin) |
 | T35 — Asset grafici | ✅ | docs/brand/: monogramma chiaro/scuro, logo CASA LIVE con wordmark e payoff, placeholder immobile line-art, template email base HTML; favicon.svg + componente <RTLogo/> già nei frontend; copiati nei public |
 | T36 — Seed dati demo | ✅ | bin/seed-demo.php idempotente: owner demo + immobile Silea in_vendita, 12 appuntamenti, 18 visite con feedback italiani realistici, 2 proposte, 6 attività marketing con stats, step a metà, 15 lead su 8 settimane |
-| T37 — Test | ⏳ | |
+| T37 — Test | ✅ | PHPUnit: 35 test/111 assert (JWT, middleware ruoli, magic link anti-enumeration + single-use, lead pubblico honeypot/validazione, InterestScore formula+trend, convert guards, sicurezza owner-scoping e visible_to_owner in query, template email senza importi). Vitest: 9 test (login pages, store, utils it-IT) |
 | T38 — Hardening | ⏳ | |
 | T39 — Deploy | ⏳ | |
 | T40 — Consegna | ⏳ | |

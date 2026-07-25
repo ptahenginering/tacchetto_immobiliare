@@ -1,9 +1,15 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 
 // Area Cliente RT CASA LIVE — servita in produzione da /app/
 export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/test/setup.ts',
+  },
   base: '/app/',
   plugins: [react()],
   resolve: {
