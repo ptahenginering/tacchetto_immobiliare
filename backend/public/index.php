@@ -31,7 +31,24 @@ $container->set(Logger::class, fn () => new Logger(__DIR__ . '/../logs/app.log')
 $container->set(PDO::class, fn () => Connection::get());
 $container->set(
     \App\Domain\Mail\MailerInterface::class,
-    fn (Container $c) => new \App\Infrastructure\Mail\LogOnlyMailer($c->get(PDO::class))
+    function (Container $c) {
+        $appUrl = $_ENV['APP_URL'] ?? 'https://tacchettoimmobiliare.it';
+        $brevoKey = $_ENV['BREVO_API_KEY'] ?? '';
+        $brevo = $brevoKey !== ''
+            ? new \App\Infrastructure\Mail\BrevoService(
+                $brevoKey,
+                $_ENV['MAIL_FROM'] ?? 'info@rtimmobiliare.it',
+                $_ENV['MAIL_FROM_NAME'] ?? 'Roberto Tacchetto — RT CASA LIVE'
+            )
+            : null;
+
+        return new \App\Infrastructure\Mail\MailService(
+            $c->get(PDO::class),
+            new \App\Infrastructure\Mail\EmailTemplates($appUrl),
+            $c->get(Logger::class),
+            $brevo
+        );
+    }
 );
 $container->set(CorsMiddleware::class, fn () => new CorsMiddleware(
     $_ENV['CORS_ALLOWED_ORIGINS']
