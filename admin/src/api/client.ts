@@ -31,7 +31,9 @@ export async function api<T = unknown>(
     body: options.formData ?? (options.body !== undefined ? JSON.stringify(options.body) : undefined),
   })
 
-  if (res.status === 401) {
+  // 401 su una route protetta = sessione scaduta → logout.
+  // 401 sul login stesso = credenziali sbagliate → va mostrato l'errore reale.
+  if (res.status === 401 && path !== '/admin/login') {
     logout()
     throw new ApiError(401, 'unauthorized', 'Sessione scaduta: effettua di nuovo il login.')
   }
