@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Admin\Ai\GenerateAiAction;
+use App\Application\Actions\Admin\Ai\ScheduledPostsAction;
 use App\Application\Actions\Admin\Leads\ConvertLeadAction;
 use App\Application\Actions\Admin\Leads\GetLeadAction;
 use App\Application\Actions\Admin\Leads\ListLeadsAction;
@@ -14,6 +16,8 @@ use App\Application\Actions\Admin\Marketing\ListMarketingAction;
 use App\Application\Actions\Admin\Marketing\SaveMarketingAction;
 use App\Application\Actions\Admin\PracticeSteps\UpdatePracticeStepAction;
 use App\Application\Actions\Admin\Stats\StatsAction;
+use App\Application\Actions\Admin\System\SystemAction;
+use App\Application\Actions\Admin\Users\StaffUsersAction;
 use App\Application\Actions\Admin\Properties\DeletePropertyAction;
 use App\Application\Actions\Admin\Proposals\DeleteProposalAction;
 use App\Application\Actions\Admin\Proposals\ListProposalsAction;
@@ -131,10 +135,27 @@ return function (App $app): void {
         // Step burocrazia
         $group->put('/practice-steps/{id:[0-9]+}', UpdatePracticeStepAction::class);
 
+        // AI marketing + post programmati
+        $group->post('/ai/generate', GenerateAiAction::class);
+        $group->put('/ai/generations/{id:[0-9]+}', [GenerateAiAction::class, 'accept']);
+        $group->get('/scheduled-posts', [ScheduledPostsAction::class, 'list']);
+        $group->post('/scheduled-posts', [ScheduledPostsAction::class, 'save']);
+        $group->put('/scheduled-posts/{id:[0-9]+}', [ScheduledPostsAction::class, 'save']);
+        $group->delete('/scheduled-posts/{id:[0-9]+}', [ScheduledPostsAction::class, 'delete']);
+
         // Statistiche
         $group->get('/stats/overview', [StatsAction::class, 'overview']);
         $group->get('/stats/leads-by-source', [StatsAction::class, 'leadsBySource']);
         $group->get('/stats/performance', [StatsAction::class, 'performance']);
         $group->get('/stats/property/{id:[0-9]+}', [StatsAction::class, 'propertyFunnel']);
+
+        // Sistema, impostazioni, utenti
+        $group->get('/system/health', [SystemAction::class, 'health']);
+        $group->post('/system/test-email', [SystemAction::class, 'testEmail']);
+        $group->get('/settings', [SystemAction::class, 'getSettings']);
+        $group->put('/settings', [SystemAction::class, 'updateSettings']);
+        $group->get('/users', [StaffUsersAction::class, 'list']);
+        $group->post('/users', [StaffUsersAction::class, 'save']);
+        $group->put('/users/{id:[0-9]+}', [StaffUsersAction::class, 'save']);
     })->add(AdminMiddleware::class);
 };
