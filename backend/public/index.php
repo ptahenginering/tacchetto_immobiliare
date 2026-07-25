@@ -29,6 +29,10 @@ $container = new Container();
 
 $container->set(Logger::class, fn () => new Logger(__DIR__ . '/../logs/app.log'));
 $container->set(PDO::class, fn () => Connection::get());
+$container->set(
+    \App\Domain\Mail\MailerInterface::class,
+    fn (Container $c) => new \App\Infrastructure\Mail\LogOnlyMailer($c->get(PDO::class))
+);
 $container->set(CorsMiddleware::class, fn () => new CorsMiddleware(
     $_ENV['CORS_ALLOWED_ORIGINS']
         ?? 'https://www.rtimmobiliare.it,https://rtimmobiliare.it,http://localhost:5173,http://localhost:5174'

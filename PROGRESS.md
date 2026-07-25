@@ -7,7 +7,7 @@
 | T03 — Migrazioni complete + seed | ✅ | 13 migrazioni idempotenti (001–013), seed agenzia RT + template step burocrazia in SQL; admin seed in PHP via Migrator::ensureAdminUser (bcrypt da ADMIN_DEFAULT_PASSWORD) |
 | T04 — Kernel Slim | ✅ | index.php + PHP-DI, error handler JSON `{"error":{code,message}}`, CorsMiddleware da env, Logger su logs/app.log; testato /api/health e 404 in locale |
 | T05 — Autenticazione | ✅ | POST /admin/login (JWT 8h) + /auth/refresh, AdminMiddleware/CustomerMiddleware su base JwtAuthMiddleware, LoginRateLimiter (10/15min per IP, tabella login_attempts, migrazione 014), JWT fail-fast senza secret; roundtrip testato |
-| T06 — Magic link proprietari | ⏳ | |
+| T06 — Magic link proprietari | ✅ | request-access (token 30min sha256, risposta anti-enumeration, rate limit) + verify (single-use → JWT owner 30gg); MailerInterface con LogOnlyMailer temporaneo (sostituito in T07) |
 | T07 — MailService + BrevoService | ⏳ | |
 | T08 — Endpoint pubblico lead | ⏳ | |
 | T09 — CRUD Leads (admin) | ⏳ | |

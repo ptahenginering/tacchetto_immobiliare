@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Application\Actions\Auth\AdminLoginAction;
 use App\Application\Actions\Auth\RefreshTokenAction;
+use App\Application\Actions\Customer\RequestAccessAction;
+use App\Application\Actions\Customer\VerifyAccessAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -27,4 +29,8 @@ return function (App $app): void {
     // --- Autenticazione ---
     $app->post('/admin/login', AdminLoginAction::class);
     $app->post('/auth/refresh', RefreshTokenAction::class);
+
+    // --- Accesso proprietari (magic link, no password) ---
+    $app->post('/customer/request-access', RequestAccessAction::class);
+    $app->post('/customer/verify', VerifyAccessAction::class);
 };
