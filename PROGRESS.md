@@ -19,7 +19,7 @@
 | T15 — Scheduler | ✅ | bin/cron.php ogni 15min: promemoria appuntamenti giorno-prima (flag reminder_sent_at), report settimanale lunedì ≥8 (idempotente via cron_runs, migrazione 016), pulizia magic link/login_attempts/throttle |
 | T16 — Statistiche admin | ✅ | overview KPI 30gg con delta % vs periodo precedente, leads-by-source con conversioni, performance serie settimanale 6 mesi zero-filled, funnel per immobile |
 | T17 — Dashboard proprietario (API) | ✅ | GET /customer/property (owner-scoped a query) + /customer/property/kpi (KPI 30gg, InterestScoreService con formula documentata e trend up/down/flat, serie visite 8 settimane zero-filled); gruppo protetto da CustomerMiddleware |
-| T18 — Feed cliente (API) | ⏳ | |
+| T18 — Feed cliente (API) | ✅ | /customer/visits, /proposals, /marketing, /practice-steps (con progress_pct), /timeline (UNION cronologico 5 tipi evento); tutto owner-scoped e filtrato visible_to_owner a query |
 | T19 — Chatbot AI cliente | ⏳ | |
 | T20 — Customer base app | ⏳ | |
 | T21 — Customer Dashboard Home | ⏳ | |

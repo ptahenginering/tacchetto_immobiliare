@@ -31,6 +31,7 @@ use App\Application\Actions\Auth\AdminLoginAction;
 use App\Application\Actions\Auth\RefreshTokenAction;
 use App\Application\Middleware\AdminMiddleware;
 use Slim\Routing\RouteCollectorProxy;
+use App\Application\Actions\Customer\CustomerFeedAction;
 use App\Application\Actions\Customer\GetMyPropertyAction;
 use App\Application\Actions\Customer\GetPropertyKpiAction;
 use App\Application\Actions\Customer\RequestAccessAction;
@@ -75,6 +76,11 @@ return function (App $app): void {
     $app->group('/customer', function (RouteCollectorProxy $group): void {
         $group->get('/property', GetMyPropertyAction::class);
         $group->get('/property/kpi', GetPropertyKpiAction::class);
+        $group->get('/visits', [CustomerFeedAction::class, 'visits']);
+        $group->get('/proposals', [CustomerFeedAction::class, 'proposals']);
+        $group->get('/marketing', [CustomerFeedAction::class, 'marketing']);
+        $group->get('/practice-steps', [CustomerFeedAction::class, 'practiceSteps']);
+        $group->get('/timeline', [CustomerFeedAction::class, 'timeline']);
     })->add(CustomerMiddleware::class);
 
     // --- Gestionale (JWT admin/agent) ---
