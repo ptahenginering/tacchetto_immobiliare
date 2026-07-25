@@ -1,12 +1,55 @@
-// Placeholder T01 — l'app completa (router, layout, pagine) arriva con i task T20–T26
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { Toaster } from 'sonner'
+import { auth } from '@/api/client'
+import Layout from '@/components/Layout'
+import AccessPage from '@/pages/AccessPage'
+import LoginPage from '@/pages/LoginPage'
+import HomePage from '@/pages/HomePage'
+import VisitsPage from '@/pages/VisitsPage'
+import ProposalsPage from '@/pages/ProposalsPage'
+import MarketingPage from '@/pages/MarketingPage'
+import PracticeStepsPage from '@/pages/PracticeStepsPage'
+import AssistantPage from '@/pages/AssistantPage'
+import ProfilePage from '@/pages/ProfilePage'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: 1, staleTime: 60_000, refetchOnWindowFocus: false },
+  },
+})
+
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  if (!auth.isLoggedIn()) return <Navigate to="/login" replace />
+  return <>{children}</>
+}
+
 export default function App() {
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-navy-deep">
-      <div className="text-center">
-        <p className="rt-eyebrow justify-center">RT CASA LIVE</p>
-        <h1 className="mt-4 font-display text-3xl text-ivory">Area Cliente</h1>
-        <p className="mt-2 text-sm text-gold-light">Trasparenza. Controllo. Risultati.</p>
-      </div>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter basename="/app">
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/access" element={<AccessPage />} />
+          <Route
+            element={
+              <RequireAuth>
+                <Layout />
+              </RequireAuth>
+            }
+          >
+            <Route path="/" element={<HomePage />} />
+            <Route path="/visite" element={<VisitsPage />} />
+            <Route path="/proposte" element={<ProposalsPage />} />
+            <Route path="/promozione" element={<MarketingPage />} />
+            <Route path="/pratiche" element={<PracticeStepsPage />} />
+            <Route path="/assistente" element={<AssistantPage />} />
+            <Route path="/profilo" element={<ProfilePage />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+      <Toaster position="top-center" richColors />
+    </QueryClientProvider>
   )
 }
