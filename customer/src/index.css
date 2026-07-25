@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy-deep: #0e1b2e;
+  --navy: #16273f;
+  --navy-panel: #1c3050;
+  --gold: #c29b52;
+  --gold-light: #dcc28c;
+  --ivory: #f6f2ea;
+  --ivory-soft: #fbf9f4;
+  --text-muted: #5c6b80;
+  --success: #2e7d5b;
+  --error: #b3402e;
+  --warning: #c98a2b;
+  --info: #3e6b9e;
+  --radius: 14px;
+  --shadow-rt: 0 24px 60px rgba(14, 27, 46, 0.18);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-ivory text-navy font-sans;
+    min-height: 100dvh;
+  }
+  /* Focus visibile oro — accessibilità */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Eyebrow maiuscole oro con hairline laterali */
+  .rt-eyebrow {
+    @apply flex items-center gap-3 text-xs font-medium uppercase tracking-[0.22em] text-gold;
+  }
+  .rt-eyebrow::before,
+  .rt-eyebrow::after {
+    content: '';
+    @apply h-px flex-1 bg-gold/40;
+  }
+  /* Card con bordo oro tenue */
+  .rt-card {
+    @apply rounded-rt border border-gold/30 bg-white shadow-sm;
+  }
+  /* Bottone primario pill gradient oro */
+  .rt-btn-primary {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-6 py-2.5 font-medium text-navy-deep transition-opacity;
+    background: linear-gradient(135deg, #d3ae66, #b98f45);
+  }
+  .rt-btn-primary:hover {
+    opacity: 0.92;
+  }
+  .rt-btn-primary:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  /* Bottone secondario outline oro */
+  .rt-btn-outline {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-gold px-6 py-2.5 font-medium text-gold transition-colors hover:bg-gold/10;
+  }
+}

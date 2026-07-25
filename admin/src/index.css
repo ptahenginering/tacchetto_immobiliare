@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy-deep: #0e1b2e;
+  --navy: #16273f;
+  --navy-panel: #1c3050;
+  --gold: #c29b52;
+  --gold-light: #dcc28c;
+  --ivory: #f6f2ea;
+  --ivory-soft: #fbf9f4;
+  --text-muted: #5c6b80;
+  --success: #2e7d5b;
+  --error: #b3402e;
+  --warning: #c98a2b;
+  --info: #3e6b9e;
+  --radius: 14px;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-ivory-soft text-navy font-sans text-[15px];
+    min-height: 100dvh;
+  }
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .rt-card {
+    @apply rounded-rt border border-gold/30 bg-white shadow-sm;
+  }
+  .rt-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-medium text-navy-deep transition-opacity;
+    background: linear-gradient(135deg, #d3ae66, #b98f45);
+  }
+  .rt-btn-primary:hover {
+    opacity: 0.92;
+  }
+  .rt-btn-primary:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .rt-btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-gold px-5 py-2 text-sm font-medium text-gold transition-colors hover:bg-gold/10;
+  }
+  /* Voce sidebar */
+  .rt-nav-item {
+    @apply flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-ivory/75 transition-colors hover:bg-white/5 hover:text-ivory;
+  }
+  .rt-nav-item.active {
+    @apply bg-gold/15 font-medium text-gold-light;
+  }
+}

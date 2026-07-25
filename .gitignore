@@ -1,0 +1,29 @@
+# Dipendenze
+node_modules/
+backend/vendor/
+
+# Build
+customer/dist/
+admin/dist/
+
+# Env reali (mai committare)
+.env
+.env.local
+.env.production
+backend/config/.env
+
+# Log e storage runtime
+backend/logs/*.log
+backend/storage/uploads/*
+!backend/storage/uploads/.gitkeep
+
+# Test / coverage
+coverage/
+.phpunit.result.cache
+.phpunit.cache/
+
+# Editor / OS
+.DS_Store
+*.swp
+.idea/
+.vscode/
