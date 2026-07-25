@@ -20,7 +20,7 @@
 | T16 — Statistiche admin | ✅ | overview KPI 30gg con delta % vs periodo precedente, leads-by-source con conversioni, performance serie settimanale 6 mesi zero-filled, funnel per immobile |
 | T17 — Dashboard proprietario (API) | ✅ | GET /customer/property (owner-scoped a query) + /customer/property/kpi (KPI 30gg, InterestScoreService con formula documentata e trend up/down/flat, serie visite 8 settimane zero-filled); gruppo protetto da CustomerMiddleware |
 | T18 — Feed cliente (API) | ✅ | /customer/visits, /proposals, /marketing, /practice-steps (con progress_pct), /timeline (UNION cronologico 5 tipi evento); tutto owner-scoped e filtrato visible_to_owner a query |
-| T19 — Chatbot AI cliente | ⏳ | |
+| T19 — Chatbot AI cliente | ✅ | AnthropicService (Messages API, modello da env, max_tokens 1000), system prompt italiano con dati reali immobile+KPI+step, persistenza chat_sessions/messages con tokens, throttle 30/15min, degradazione gentile senza chiave |
 | T20 — Customer base app | ⏳ | |
 | T21 — Customer Dashboard Home | ⏳ | |
 | T22 — Customer Visite & Feedback | ⏳ | |
