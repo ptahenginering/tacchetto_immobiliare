@@ -23,11 +23,11 @@
 | T19 — Chatbot AI cliente | ✅ | AnthropicService (Messages API, modello da env, max_tokens 1000), system prompt italiano con dati reali immobile+KPI+step, persistenza chat_sessions/messages con tokens, throttle 30/15min, degradazione gentile senza chiave |
 | T20 — Customer base app | ✅ | Router base /app (login, access, 7 route protette), client API con JWT localStorage e 401→login, layout mobile con bottom nav 5 voci + header monogramma, splash login navy con magic link, EmptyState e Skeleton brandizzati; build OK |
 | T21 — Customer Dashboard Home | ✅ | Hero card immobile con badge stato oro, 4 KPI Playfair (incl. interesse % con trend e tooltip spiegazione), grafico area visite (recharts, dot oro), ultimi 3 riscontri, prossimi appuntamenti, bottone refresh, skeleton |
-| T22 — Customer Visite & Feedback | ⏳ | |
-| T23 — Customer Proposte | ⏳ | |
-| T24 — Customer Promozione | ⏳ | |
-| T25 — Customer Pratiche | ⏳ | |
-| T26 — Customer Assistente + Profilo | ⏳ | |
+| T22 — Customer Visite & Feedback | ✅ | Lista cronologica con data, etichetta visitatore, badge qualificata, stelle oro, citazione feedback; empty state curato |
+| T23 — Customer Proposte | ✅ | Card con importo Playfair € it-IT, stato con colori semantici, nota fissa "discussa personalmente con Roberto" |
+| T24 — Customer Promozione | ✅ | Card per canale con stats leggibili (1.234 visualizzazioni · 8 contatti), link esterno, label canali |
+| T25 — Customer Pratiche | ✅ | Stepper verticale (✓ oro/in corso/da fare), barra % completamento, copy rassicurante |
+| T26 — Customer Assistente + Profilo | ✅ | Chat bolle navy/avorio con typing indicator e disclaimer, sessione persistente; profilo con contatti Roberto (tel/mailto) e logout |
 | T27 — Admin base | ⏳ | |
 | T28 — Admin Dashboard | ⏳ | |
 | T29 — Admin Lead | ⏳ | |
