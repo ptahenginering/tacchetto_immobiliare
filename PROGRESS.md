@@ -37,7 +37,7 @@
 | T33 — Admin Marketing + AI | ✅ | Registro attività con stats; sezione "Genera con AI" (backend POST /admin/ai/generate con Anthropic, 4 tipi, salvataggio ai_generations) → anteprima → modifica → copia/bozza scheduled_posts; tabella post con badge "pubblicazione manuale" |
 | T34 — Admin Statistiche + Impostazioni | ✅ | Statistiche con filtro periodo + export CSV client-side; impostazioni: dati agenzia, stato integrazioni da /admin/system/health, test email, gestione utenti staff (solo admin) |
 | T35 — Asset grafici | ✅ | docs/brand/: monogramma chiaro/scuro, logo CASA LIVE con wordmark e payoff, placeholder immobile line-art, template email base HTML; favicon.svg + componente <RTLogo/> già nei frontend; copiati nei public |
-| T36 — Seed dati demo | ⏳ | |
+| T36 — Seed dati demo | ✅ | bin/seed-demo.php idempotente: owner demo + immobile Silea in_vendita, 12 appuntamenti, 18 visite con feedback italiani realistici, 2 proposte, 6 attività marketing con stats, step a metà, 15 lead su 8 settimane |
 | T37 — Test | ⏳ | |
 | T38 — Hardening | ⏳ | |
 | T39 — Deploy | ⏳ | |
