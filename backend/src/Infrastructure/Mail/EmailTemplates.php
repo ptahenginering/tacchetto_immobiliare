@@ -132,6 +132,19 @@ final class EmailTemplates
                     ),
                 ];
 
+            case 'lead_autoresponder':
+                return [
+                    'subject' => 'Abbiamo ricevuto la tua richiesta',
+                    'html' => $this->layout(
+                        'Richiesta ricevuta',
+                        "<p>Ciao {$name},</p>
+                         <p>grazie per averci scritto. Roberto ti ricontatterà personalmente al più presto
+                         per capire insieme come valorizzare al meglio il tuo immobile.</p>
+                         <p style=\"font-size:13px;color:#5C6B80\">Se hai urgenza puoi chiamare direttamente:
+                         <a href=\"tel:+393457771822\" style=\"color:#C29B52\">+39 345 7771822</a></p>"
+                    ),
+                ];
+
             case 'promemoria_appuntamento':
                 $when = $this->e((string) ($vars['when'] ?? ''));
                 $type = $this->e((string) ($vars['type'] ?? 'appuntamento'));
