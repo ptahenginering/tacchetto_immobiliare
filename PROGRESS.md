@@ -5,7 +5,7 @@
 | T01 — Scaffolding monorepo | ✅ | backend composer (Slim4+DI+JWT+PHPMailer+Dompdf), customer/ e admin/ Vite+React-TS+Tailwind con tema RT, build OK; .env.example completo |
 | T02 — Connection + migration runner | ✅ | PDO singleton pgsql, bin/migrate.php transazionale con schema_migrations |
 | T03 — Migrazioni complete + seed | ✅ | 13 migrazioni idempotenti (001–013), seed agenzia RT + template step burocrazia in SQL; admin seed in PHP via Migrator::ensureAdminUser (bcrypt da ADMIN_DEFAULT_PASSWORD) |
-| T04 — Kernel Slim | ⏳ | |
+| T04 — Kernel Slim | ✅ | index.php + PHP-DI, error handler JSON `{"error":{code,message}}`, CorsMiddleware da env, Logger su logs/app.log; testato /api/health e 404 in locale |
 | T05 — Autenticazione | ⏳ | |
 | T06 — Magic link proprietari | ⏳ | |
 | T07 — MailService + BrevoService | ⏳ | |

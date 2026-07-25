@@ -26,7 +26,7 @@ docker compose up -d postgres
 php bin/migrate.php
 
 # 3. API dev server
-php -S localhost:8080 -t public
+php -S localhost:8080 -t public public/index.php
 
 # 4. Frontend (in due terminali)
 cd customer && npm install && npm run dev   # http://localhost:5173
