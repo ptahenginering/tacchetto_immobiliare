@@ -67,6 +67,7 @@ $app->setBasePath('/api');
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
 $app->add($container->get(CorsMiddleware::class));
+$app->add(new \App\Application\Middleware\SecurityHeadersMiddleware());
 
 // --- Error handler JSON uniforme: {"error":{"code","message"}} ---
 $errorMiddleware = $app->addErrorMiddleware($appEnv !== 'production', false, false);
