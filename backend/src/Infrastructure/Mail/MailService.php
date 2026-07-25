@@ -95,7 +95,10 @@ final class MailService implements MailerInterface
         $mail->SMTPAuth = true;
         $mail->Username = $_ENV['SMTP_USER'] ?? getenv('SMTP_USER') ?: '';
         $mail->Password = $_ENV['SMTP_PASS'] ?? getenv('SMTP_PASS') ?: '';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        // Porta 465 = SSL implicito (smtps), altrimenti STARTTLS (es. 587)
+        $mail->SMTPSecure = $mail->Port === 465
+            ? PHPMailer::ENCRYPTION_SMTPS
+            : PHPMailer::ENCRYPTION_STARTTLS;
         $mail->CharSet = PHPMailer::CHARSET_UTF8;
 
         $fromEmail = $_ENV['MAIL_FROM'] ?? getenv('MAIL_FROM') ?: 'info@rtimmobiliare.it';
