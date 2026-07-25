@@ -6,8 +6,11 @@
 
 ## Architettura in produzione
 
+> ⚠️ La root dell'account FTP SiteGround è la **home utente**, non il docroot:
+> il workflow deploya quindi su `tacchettoimmobiliare.it/public_html/…`.
+
 ```
-public_html/
+~/tacchettoimmobiliare.it/public_html/          ← docroot
 ├── index.html, img/, …      ← sito vetrina statico (repo: public_html/)
 ├── .htaccess                 ← HTTPS redirect (generato dal workflow)
 ├── app/                      ← Area Cliente (customer/dist, base /app/)
