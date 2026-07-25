@@ -9,6 +9,10 @@ use App\Application\Actions\Admin\Leads\UpdateLeadAction;
 use App\Application\Actions\Admin\Appointments\DeleteAppointmentAction;
 use App\Application\Actions\Admin\Appointments\ListAppointmentsAction;
 use App\Application\Actions\Admin\Appointments\SaveAppointmentAction;
+use App\Application\Actions\Admin\Marketing\DeleteMarketingAction;
+use App\Application\Actions\Admin\Marketing\ListMarketingAction;
+use App\Application\Actions\Admin\Marketing\SaveMarketingAction;
+use App\Application\Actions\Admin\PracticeSteps\UpdatePracticeStepAction;
 use App\Application\Actions\Admin\Properties\DeletePropertyAction;
 use App\Application\Actions\Admin\Proposals\DeleteProposalAction;
 use App\Application\Actions\Admin\Proposals\ListProposalsAction;
@@ -99,5 +103,14 @@ return function (App $app): void {
         $group->post('/proposals', SaveProposalAction::class);
         $group->put('/proposals/{id:[0-9]+}', SaveProposalAction::class);
         $group->delete('/proposals/{id:[0-9]+}', DeleteProposalAction::class);
+
+        // Marketing
+        $group->get('/marketing', ListMarketingAction::class);
+        $group->post('/marketing', SaveMarketingAction::class);
+        $group->put('/marketing/{id:[0-9]+}', SaveMarketingAction::class);
+        $group->delete('/marketing/{id:[0-9]+}', DeleteMarketingAction::class);
+
+        // Step burocrazia
+        $group->put('/practice-steps/{id:[0-9]+}', UpdatePracticeStepAction::class);
     })->add(AdminMiddleware::class);
 };

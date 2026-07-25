@@ -132,6 +132,19 @@ final class EmailTemplates
                     ),
                 ];
 
+            case 'step_completato':
+                $stepLabel = $this->e((string) ($vars['step_label'] ?? 'Uno step della pratica'));
+                return [
+                    'subject' => 'Un passo avanti per la tua pratica',
+                    'html' => $this->layout(
+                        'Pratica aggiornata',
+                        "<p>Ciao {$name},</p>
+                         <p>abbiamo completato: <strong>{$stepLabel}</strong>.</p>
+                         <p>Ci occupiamo noi di ogni passaggio — puoi seguire l'avanzamento completo nella tua area.</p>"
+                        . $this->button('Vedi le pratiche', $app . '/app/pratiche')
+                    ),
+                ];
+
             case 'lead_autoresponder':
                 return [
                     'subject' => 'Abbiamo ricevuto la tua richiesta',

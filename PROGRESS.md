@@ -15,7 +15,7 @@
 | T11 — CRUD Appointments (admin) | ✅ | CRUD con validazione FK lead/property, GET ?from&to per calendario; promemoria email gestito dal cron T15 (colonna reminder_sent_at) |
 | T12 — CRUD Visits + feedback (admin) | ✅ | CRUD con visitor_label obbligatoria (mai dati personali), rating 1–5, toggle visible_to_owner; email nuovo_feedback/nuova_visita al proprietario solo se visibile (§6) |
 | T13 — CRUD Proposals (admin) | ✅ | CRUD con pipeline stato, email nuova_proposta SENZA importo (solo invito app), toggle visible_to_owner |
-| T14 — Marketing + practice steps (admin) | ⏳ | |
+| T14 — Marketing + practice steps (admin) | ✅ | CRUD attività promozione con stats JSONB editabili; update step burocrazia con completed_at automatico ed email step_completato (template aggiunto) se visibile |
 | T15 — Scheduler | ⏳ | |
 | T16 — Statistiche admin | ⏳ | |
 | T17 — Dashboard proprietario (API) | ⏳ | |
