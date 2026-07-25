@@ -29,13 +29,13 @@
 | T25 — Customer Pratiche | ✅ | Stepper verticale (✓ oro/in corso/da fare), barra % completamento, copy rassicurante |
 | T26 — Customer Assistente + Profilo | ✅ | Chat bolle navy/avorio con typing indicator e disclaimer, sessione persistente; profilo con contatti Roberto (tel/mailto) e logout |
 | T27 — Admin base | ✅ | Login brandizzato, sidebar navy 9 voci + topbar con ricerca globale, Zustand (auth persist + UI), routing protetto, client API con 401→logout, tipi e label condivise; build OK |
-| T28 — Admin Dashboard | ⏳ | |
-| T29 — Admin Lead | ⏳ | |
-| T30 — Admin Immobili | ⏳ | |
-| T31 — Admin Appuntamenti | ⏳ | |
-| T32 — Admin Visite & Proposte | ⏳ | |
-| T33 — Admin Marketing + AI | ⏳ | |
-| T34 — Admin Statistiche + Impostazioni | ⏳ | |
+| T28 — Admin Dashboard | ✅ | 4 KPI con delta %, line chart performance 6 mesi, donut lead per fonte, tabella ultimi lead, appuntamenti oggi/domani |
+| T29 — Admin Lead | ✅ | Tabella con filtri/ricerca/paginazione server-side, drawer dettaglio con pipeline stato e note, wizard "Converti in incarico" (proprietario → immobile → benvenuto) |
+| T30 — Admin Immobili | ✅ | Lista card con cover/stato/contatori, scheda a 7 tab (Dati, Foto drag&drop con riordino/cover/delete, Visite, Proposte, Marketing, Pratiche con toggle ciclico, Statistiche funnel); occhio visible_to_owner ovunque |
+| T31 — Admin Appuntamenti | ✅ | Vista calendario settimanale + lista, creazione/modifica/eliminazione con modal, navigazione settimane |
+| T32 — Admin Visite & Proposte | ✅ | Form visita con stelle+label visitatore e avviso privacy/visibilità; proposte con cambio stato pipeline inline e toggle occhio |
+| T33 — Admin Marketing + AI | ✅ | Registro attività con stats; sezione "Genera con AI" (backend POST /admin/ai/generate con Anthropic, 4 tipi, salvataggio ai_generations) → anteprima → modifica → copia/bozza scheduled_posts; tabella post con badge "pubblicazione manuale" |
+| T34 — Admin Statistiche + Impostazioni | ✅ | Statistiche con filtro periodo + export CSV client-side; impostazioni: dati agenzia, stato integrazioni da /admin/system/health, test email, gestione utenti staff (solo admin) |
 | T35 — Asset grafici | ⏳ | |
 | T36 — Seed dati demo | ⏳ | |
 | T37 — Test | ⏳ | |
