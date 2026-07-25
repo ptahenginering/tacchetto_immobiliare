@@ -6,6 +6,7 @@ namespace App\Application\Actions\Customer;
 
 use App\Application\Actions\Action;
 use App\Application\Security\LoginRateLimiter;
+use App\Application\Services\MagicLinkService;
 use App\Domain\Mail\MailerInterface;
 use App\Infrastructure\Logger;
 use PDO;
@@ -20,10 +21,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  */
 final class RequestAccessAction extends Action
 {
-    private const TOKEN_TTL_MINUTES = 30;
-
     public function __construct(
         private readonly PDO $pdo,
+        private readonly MagicLinkService $magicLinks,
         private readonly MailerInterface $mailer,
         private readonly LoginRateLimiter $rateLimiter,
         private readonly Logger $logger,
@@ -57,25 +57,12 @@ final class RequestAccessAction extends Action
         $owner = $stmt->fetch();
 
         if ($owner) {
-            $token = bin2hex(random_bytes(32));
-
-            $ins = $this->pdo->prepare(
-                'INSERT INTO magic_links (agency_id, user_id, token_hash, expires_at)
-                 VALUES (1, :uid, :hash, now() + make_interval(mins => :mins))'
-            );
-            $ins->execute([
-                'uid' => $owner['id'],
-                'hash' => hash('sha256', $token),
-                'mins' => self::TOKEN_TTL_MINUTES,
-            ]);
-
-            $appUrl = rtrim($_ENV['APP_URL'] ?? 'https://tacchettoimmobiliare.it', '/');
-            $link = $appUrl . '/app/access?token=' . $token;
+            $link = $this->magicLinks->createForUser((int) $owner['id']);
 
             $this->mailer->send($owner['email'], 'magic_link', [
                 'first_name' => $owner['first_name'],
                 'link' => $link,
-                'minutes' => self::TOKEN_TTL_MINUTES,
+                'minutes' => MagicLinkService::TOKEN_TTL_MINUTES,
             ], 'user', (int) $owner['id']);
 
             $this->logger->info('Magic link generato', ['uid' => $owner['id']]);

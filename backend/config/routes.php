@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Admin\Leads\ConvertLeadAction;
+use App\Application\Actions\Admin\Leads\GetLeadAction;
+use App\Application\Actions\Admin\Leads\ListLeadsAction;
+use App\Application\Actions\Admin\Leads\UpdateLeadAction;
 use App\Application\Actions\Auth\AdminLoginAction;
 use App\Application\Actions\Auth\RefreshTokenAction;
+use App\Application\Middleware\AdminMiddleware;
+use Slim\Routing\RouteCollectorProxy;
 use App\Application\Actions\Customer\RequestAccessAction;
 use App\Application\Actions\Customer\VerifyAccessAction;
 use App\Application\Actions\PublicSite\CreateLeadAction;
@@ -37,4 +43,13 @@ return function (App $app): void {
 
     // --- Endpoint pubblici sito vetrina ---
     $app->post('/public/leads', CreateLeadAction::class);
+
+    // --- Gestionale (JWT admin/agent) ---
+    $app->group('/admin', function (RouteCollectorProxy $group): void {
+        // Lead
+        $group->get('/leads', ListLeadsAction::class);
+        $group->get('/leads/{id:[0-9]+}', GetLeadAction::class);
+        $group->put('/leads/{id:[0-9]+}', UpdateLeadAction::class);
+        $group->post('/leads/{id:[0-9]+}/convert', ConvertLeadAction::class);
+    })->add(AdminMiddleware::class);
 };

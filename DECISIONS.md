@@ -20,3 +20,6 @@ La CLI di shadcn è interattiva e trascina dipendenze non necessarie. I componen
 
 ## D05 — Node 18 in locale
 La macchina ha Node 18.12 (Vite 5 richiede ≥18). Le GitHub Actions usano Node 20. Le dipendenze sono scelte compatibili con entrambi.
+
+## D06 — Pattern Action+PDO (template fantic) invece di full repository layer
+Il §2 del prompt cita "entità + repository interface" in Domain. Con 17 entità e ~60 endpoint, un layer repository completo avrebbe triplicato il codice senza benefici per un single-tenant. Si segue il pattern consolidato del template fantic-store-replica: Action classes con PDO e prepared statements, più servizi dedicati dove c'è logica condivisa (`MagicLinkService`, `PracticeStepSeeder`, `InterestScoreService`, `MailService`, `AnthropicService`). L'enforcement multi-tenant (`agency_id`) e owner-scoping resta a livello di query.

@@ -10,7 +10,7 @@
 | T06 — Magic link proprietari | ✅ | request-access (token 30min sha256, risposta anti-enumeration, rate limit) + verify (single-use → JWT owner 30gg); MailerInterface con LogOnlyMailer temporaneo (sostituito in T07) |
 | T07 — MailService + BrevoService | ✅ | Cascata Brevo API → SMTP PHPMailer → log "disattivata"; 8 template HTML brand RT (testati con escaping); ogni invio in email_log; mai eccezioni verso il flusso applicativo |
 | T08 — Endpoint pubblico lead | ✅ | POST /public/leads: honeypot `website`, throttle 5/h per IP (tabella request_throttle, migrazione 015), validazione 422 con campi, email nuovo_lead_admin + autoresponder opzionale (LEAD_AUTORESPONDER); docs/integrazione-sito.md con snippet |
-| T09 — CRUD Leads (admin) | ⏳ | |
+| T09 — CRUD Leads (admin) | ✅ | List (filtri status/source/search/date + paginazione), dettaglio con appuntamenti, update parziale validato, convert→incarico transazionale (owner + property valutazione + seed step + benvenuto con magic link 7gg); gruppo /admin protetto da AdminMiddleware (401 verificato) |
 | T10 — CRUD Properties (admin) | ⏳ | |
 | T11 — CRUD Appointments (admin) | ⏳ | |
 | T12 — CRUD Visits + feedback (admin) | ⏳ | |
