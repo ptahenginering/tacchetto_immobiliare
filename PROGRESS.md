@@ -13,7 +13,7 @@
 | T09 — CRUD Leads (admin) | ✅ | List (filtri status/source/search/date + paginazione), dettaglio con appuntamenti, update parziale validato, convert→incarico transazionale (owner + property valutazione + seed step + benvenuto con magic link 7gg); gruppo /admin protetto da AdminMiddleware (401 verificato) |
 | T10 — CRUD Properties (admin) | ✅ | CRUD completo, upload multipart con GD (resize 1600px, jpg/png/webp, max UPLOAD_MAX_MB, mime da byte reali), riordino/cover/delete immagini, auto-cover, serve file via /api/files con anti path-traversal, auto-seed practice_steps |
 | T11 — CRUD Appointments (admin) | ✅ | CRUD con validazione FK lead/property, GET ?from&to per calendario; promemoria email gestito dal cron T15 (colonna reminder_sent_at) |
-| T12 — CRUD Visits + feedback (admin) | ⏳ | |
+| T12 — CRUD Visits + feedback (admin) | ✅ | CRUD con visitor_label obbligatoria (mai dati personali), rating 1–5, toggle visible_to_owner; email nuovo_feedback/nuova_visita al proprietario solo se visibile (§6) |
 | T13 — CRUD Proposals (admin) | ⏳ | |
 | T14 — Marketing + practice steps (admin) | ⏳ | |
 | T15 — Scheduler | ⏳ | |

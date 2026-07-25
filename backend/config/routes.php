@@ -10,6 +10,9 @@ use App\Application\Actions\Admin\Appointments\DeleteAppointmentAction;
 use App\Application\Actions\Admin\Appointments\ListAppointmentsAction;
 use App\Application\Actions\Admin\Appointments\SaveAppointmentAction;
 use App\Application\Actions\Admin\Properties\DeletePropertyAction;
+use App\Application\Actions\Admin\Visits\DeleteVisitAction;
+use App\Application\Actions\Admin\Visits\ListVisitsAction;
+use App\Application\Actions\Admin\Visits\SaveVisitAction;
 use App\Application\Actions\Admin\Properties\GetPropertyAction;
 use App\Application\Actions\Admin\Properties\ListPropertiesAction;
 use App\Application\Actions\Admin\Properties\ManagePropertyImageAction;
@@ -81,5 +84,11 @@ return function (App $app): void {
         $group->post('/appointments', SaveAppointmentAction::class);
         $group->put('/appointments/{id:[0-9]+}', SaveAppointmentAction::class);
         $group->delete('/appointments/{id:[0-9]+}', DeleteAppointmentAction::class);
+
+        // Visite & feedback
+        $group->get('/visits', ListVisitsAction::class);
+        $group->post('/visits', SaveVisitAction::class);
+        $group->put('/visits/{id:[0-9]+}', SaveVisitAction::class);
+        $group->delete('/visits/{id:[0-9]+}', DeleteVisitAction::class);
     })->add(AdminMiddleware::class);
 };
