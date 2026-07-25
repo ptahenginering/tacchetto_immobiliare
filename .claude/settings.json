@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit *)",
+      "Bash(node -e \"try{require\\('js-yaml'\\)}catch\\(e\\){process.exit\\(0\\)}\")",
+      "Bash(ruby -ryaml -e \"YAML.load_file\\('.github/workflows/deploy.yml'\\); YAML.load_file\\('docker-compose.yml'\\); puts 'yaml ok'\")"
+    ]
+  }
+}
