@@ -10,6 +10,9 @@ use App\Application\Actions\Admin\Appointments\DeleteAppointmentAction;
 use App\Application\Actions\Admin\Appointments\ListAppointmentsAction;
 use App\Application\Actions\Admin\Appointments\SaveAppointmentAction;
 use App\Application\Actions\Admin\Properties\DeletePropertyAction;
+use App\Application\Actions\Admin\Proposals\DeleteProposalAction;
+use App\Application\Actions\Admin\Proposals\ListProposalsAction;
+use App\Application\Actions\Admin\Proposals\SaveProposalAction;
 use App\Application\Actions\Admin\Visits\DeleteVisitAction;
 use App\Application\Actions\Admin\Visits\ListVisitsAction;
 use App\Application\Actions\Admin\Visits\SaveVisitAction;
@@ -90,5 +93,11 @@ return function (App $app): void {
         $group->post('/visits', SaveVisitAction::class);
         $group->put('/visits/{id:[0-9]+}', SaveVisitAction::class);
         $group->delete('/visits/{id:[0-9]+}', DeleteVisitAction::class);
+
+        // Proposte
+        $group->get('/proposals', ListProposalsAction::class);
+        $group->post('/proposals', SaveProposalAction::class);
+        $group->put('/proposals/{id:[0-9]+}', SaveProposalAction::class);
+        $group->delete('/proposals/{id:[0-9]+}', DeleteProposalAction::class);
     })->add(AdminMiddleware::class);
 };
