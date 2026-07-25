@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom'
-import { LogOut, Mail, Phone, UserRound } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { BookOpen, ChevronRight, LogOut, Mail, Phone, UserRound } from 'lucide-react'
 import { auth } from '@/api/client'
 import { RTMonogram } from '@/components/RTLogo'
 
@@ -51,6 +51,15 @@ export default function ProfilePage() {
           </a>
         </div>
       </div>
+
+      {/* Guida */}
+      <Link to="/guida" className="rt-card flex min-h-[56px] items-center justify-between px-4 py-3 hover:bg-ivory-soft">
+        <span className="flex items-center gap-3">
+          <BookOpen size={19} className="text-gold" strokeWidth={1.6} />
+          <span className="text-sm font-medium text-navy">Guida: come funziona la tua area</span>
+        </span>
+        <ChevronRight size={17} className="text-muted" />
+      </Link>
 
       <button
         onClick={logout}

@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import {
   BarChart3,
+  BookOpen,
   CalendarDays,
   HandCoins,
   Home,
@@ -30,6 +31,7 @@ const NAV = [
   { to: '/marketing', label: 'Marketing', icon: Megaphone },
   { to: '/statistiche', label: 'Statistiche', icon: BarChart3 },
   { to: '/impostazioni', label: 'Impostazioni', icon: Settings },
+  { to: '/guida', label: 'Guida', icon: BookOpen },
 ]
 
 /** Layout gestionale: sidebar navy + topbar con ricerca globale. */

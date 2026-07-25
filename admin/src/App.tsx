@@ -14,6 +14,7 @@ import ProposalsPage from '@/pages/ProposalsPage'
 import MarketingPage from '@/pages/MarketingPage'
 import StatsPage from '@/pages/StatsPage'
 import SettingsPage from '@/pages/SettingsPage'
+import GuidePage from '@/pages/GuidePage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,7 @@ export default function App() {
             <Route path="/marketing" element={<MarketingPage />} />
             <Route path="/statistiche" element={<StatsPage />} />
             <Route path="/impostazioni" element={<SettingsPage />} />
+            <Route path="/guida" element={<GuidePage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

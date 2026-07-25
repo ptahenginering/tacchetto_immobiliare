@@ -160,35 +160,35 @@ jobs:
         working-directory: backend
         run: |
           cat > config/.env <<EOF
-          APP_ENV=production
-          APP_URL=${{ secrets.APP_URL }}
-          CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }}
-          DB_HOST=${{ secrets.DB_HOST }}
-          DB_PORT=${{ secrets.DB_PORT }}
-          DB_NAME=${{ secrets.DB_NAME }}
-          DB_USER=${{ secrets.DB_USER }}
-          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          JWT_SECRET=${{ secrets.JWT_SECRET }}
-          JWT_TTL_ADMIN=28800
-          JWT_TTL_OWNER=2592000
-          ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
-          ADMIN_DEFAULT_PASSWORD=${{ secrets.ADMIN_DEFAULT_PASSWORD }}
-          BREVO_API_KEY=${{ secrets.BREVO_API_KEY }}
-          MAIL_FROM=${{ secrets.MAIL_FROM }}
-          MAIL_FROM_NAME=${{ secrets.MAIL_FROM_NAME }}
-          SMTP_HOST=${{ secrets.SMTP_HOST }}
-          SMTP_PORT=${{ secrets.SMTP_PORT }}
-          SMTP_USER=${{ secrets.SMTP_USER }}
-          SMTP_PASS=${{ secrets.SMTP_PASS }}
-          LEAD_AUTORESPONDER=${{ secrets.LEAD_AUTORESPONDER }}
-          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
-          ANTHROPIC_MODEL=${{ secrets.ANTHROPIC_MODEL }}
-          UPLOAD_MAX_MB=8
-          MIGRATION_KEY=${{ secrets.MIGRATION_KEY }}
-          META_APP_ID=
-          META_APP_SECRET=
-          LINKEDIN_CLIENT_ID=
-          LINKEDIN_CLIENT_SECRET=
+          APP_ENV="production"
+          APP_URL="${{ secrets.APP_URL }}"
+          CORS_ALLOWED_ORIGINS="${{ secrets.CORS_ALLOWED_ORIGINS }}"
+          DB_HOST="${{ secrets.DB_HOST }}"
+          DB_PORT="${{ secrets.DB_PORT }}"
+          DB_NAME="${{ secrets.DB_NAME }}"
+          DB_USER="${{ secrets.DB_USER }}"
+          DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
+          JWT_SECRET="${{ secrets.JWT_SECRET }}"
+          JWT_TTL_ADMIN="28800"
+          JWT_TTL_OWNER="2592000"
+          ADMIN_EMAIL="${{ secrets.ADMIN_EMAIL }}"
+          ADMIN_DEFAULT_PASSWORD="${{ secrets.ADMIN_DEFAULT_PASSWORD }}"
+          BREVO_API_KEY="${{ secrets.BREVO_API_KEY }}"
+          MAIL_FROM="${{ secrets.MAIL_FROM }}"
+          MAIL_FROM_NAME="${{ secrets.MAIL_FROM_NAME }}"
+          SMTP_HOST="${{ secrets.SMTP_HOST }}"
+          SMTP_PORT="${{ secrets.SMTP_PORT }}"
+          SMTP_USER="${{ secrets.SMTP_USER }}"
+          SMTP_PASS="${{ secrets.SMTP_PASS }}"
+          LEAD_AUTORESPONDER="${{ secrets.LEAD_AUTORESPONDER }}"
+          ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}"
+          ANTHROPIC_MODEL="${{ secrets.ANTHROPIC_MODEL }}"
+          UPLOAD_MAX_MB="8"
+          MIGRATION_KEY="${{ secrets.MIGRATION_KEY }}"
+          META_APP_ID=""
+          META_APP_SECRET=""
+          LINKEDIN_CLIENT_ID=""
+          LINKEDIN_CLIENT_SECRET=""
           EOF
 
       - name: Deploy FTP backend
@@ -215,7 +215,12 @@ jobs:
           sleep 10
           HTTP_CODE=$(curl -s -o /tmp/migrate.json -w "%{http_code}" \
             "${{ secrets.APP_URL }}/api/public/run-migrations.php?key=${{ secrets.MIGRATION_KEY }}")
-          cat /tmp/migrate.json
+          cat /tmp/migrate.json; echo
+          if grep -q sgcaptcha /tmp/migrate.json; then
+            echo "::warning::SiteGround ha bloccato la richiesta col captcha anti-bot (IP GitHub)."
+            echo "::warning::Esegui manualmente da un browser/IP residenziale: APP_URL/api/public/run-migrations.php?key=MIGRATION_KEY"
+            exit 0
+          fi
           if [ "$HTTP_CODE" != "200" ]; then
             echo "::error::Migrazioni fallite (HTTP $HTTP_CODE)"
             exit 1
@@ -223,4 +228,13 @@ jobs:
 
       - name: Health check
         run: |
-          curl -sf "${{ secrets.APP_URL }}/api/health" || (echo "::error::Health check fallito" && exit 1)
+          BODY=$(curl -s "${{ secrets.APP_URL }}/api/health" || true)
+          echo "$BODY"
+          if echo "$BODY" | grep -q '"status":"ok"'; then
+            echo "API OK"
+          elif echo "$BODY" | grep -q sgcaptcha; then
+            echo "::warning::Health check bloccato dal captcha SiteGround: verificare manualmente APP_URL/api/health"
+          else
+            echo "::error::Health check fallito"
+            exit 1
+          fi

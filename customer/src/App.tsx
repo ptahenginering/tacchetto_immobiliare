@@ -12,6 +12,7 @@ import MarketingPage from '@/pages/MarketingPage'
 import PracticeStepsPage from '@/pages/PracticeStepsPage'
 import AssistantPage from '@/pages/AssistantPage'
 import ProfilePage from '@/pages/ProfilePage'
+import GuidePage from '@/pages/GuidePage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +46,7 @@ export default function App() {
             <Route path="/pratiche" element={<PracticeStepsPage />} />
             <Route path="/assistente" element={<AssistantPage />} />
             <Route path="/profilo" element={<ProfilePage />} />
+            <Route path="/guida" element={<GuidePage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

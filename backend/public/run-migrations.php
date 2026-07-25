@@ -14,6 +14,7 @@ declare(strict_types=1);
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Infrastructure\Database\Connection;
+use App\Infrastructure\Database\DemoSeeder;
 use App\Infrastructure\Database\Migrator;
 
 header('Content-Type: application/json; charset=utf-8');
@@ -60,12 +61,19 @@ HT;
         @file_put_contents($dir . '/.htaccess', $htaccess);
     }
 
-    echo json_encode([
+    $output = [
         'ok' => true,
         'migrations_applied' => $ran,
         'admin_user' => $admin,
         'time' => date('c'),
-    ], JSON_UNESCAPED_UNICODE);
+    ];
+
+    // Seed demo opzionale: ...&seed-demo=1 (idempotente, restituisce gli accessi)
+    if (isset($_GET['seed-demo'])) {
+        $output['demo'] = (new DemoSeeder($pdo))->run();
+    }
+
+    echo json_encode($output, JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {
     http_response_code(500);
     echo json_encode(['error' => ['code' => 'migration_failed', 'message' => $e->getMessage()]], JSON_UNESCAPED_UNICODE);
