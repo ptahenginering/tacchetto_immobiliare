@@ -22,7 +22,7 @@
 | T18 — Feed cliente (API) | ✅ | /customer/visits, /proposals, /marketing, /practice-steps (con progress_pct), /timeline (UNION cronologico 5 tipi evento); tutto owner-scoped e filtrato visible_to_owner a query |
 | T19 — Chatbot AI cliente | ✅ | AnthropicService (Messages API, modello da env, max_tokens 1000), system prompt italiano con dati reali immobile+KPI+step, persistenza chat_sessions/messages con tokens, throttle 30/15min, degradazione gentile senza chiave |
 | T20 — Customer base app | ✅ | Router base /app (login, access, 7 route protette), client API con JWT localStorage e 401→login, layout mobile con bottom nav 5 voci + header monogramma, splash login navy con magic link, EmptyState e Skeleton brandizzati; build OK |
-| T21 — Customer Dashboard Home | ⏳ | |
+| T21 — Customer Dashboard Home | ✅ | Hero card immobile con badge stato oro, 4 KPI Playfair (incl. interesse % con trend e tooltip spiegazione), grafico area visite (recharts, dot oro), ultimi 3 riscontri, prossimi appuntamenti, bottone refresh, skeleton |
 | T22 — Customer Visite & Feedback | ⏳ | |
 | T23 — Customer Proposte | ⏳ | |
 | T24 — Customer Promozione | ⏳ | |
