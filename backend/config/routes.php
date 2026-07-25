@@ -6,6 +6,9 @@ use App\Application\Actions\Admin\Leads\ConvertLeadAction;
 use App\Application\Actions\Admin\Leads\GetLeadAction;
 use App\Application\Actions\Admin\Leads\ListLeadsAction;
 use App\Application\Actions\Admin\Leads\UpdateLeadAction;
+use App\Application\Actions\Admin\Appointments\DeleteAppointmentAction;
+use App\Application\Actions\Admin\Appointments\ListAppointmentsAction;
+use App\Application\Actions\Admin\Appointments\SaveAppointmentAction;
 use App\Application\Actions\Admin\Properties\DeletePropertyAction;
 use App\Application\Actions\Admin\Properties\GetPropertyAction;
 use App\Application\Actions\Admin\Properties\ListPropertiesAction;
@@ -72,5 +75,11 @@ return function (App $app): void {
         $group->put('/properties/{id:[0-9]+}/images/order', [ManagePropertyImageAction::class, 'reorder']);
         $group->put('/properties/{id:[0-9]+}/images/{imageId:[0-9]+}/cover', [ManagePropertyImageAction::class, 'setCover']);
         $group->delete('/properties/{id:[0-9]+}/images/{imageId:[0-9]+}', [ManagePropertyImageAction::class, 'delete']);
+
+        // Appuntamenti
+        $group->get('/appointments', ListAppointmentsAction::class);
+        $group->post('/appointments', SaveAppointmentAction::class);
+        $group->put('/appointments/{id:[0-9]+}', SaveAppointmentAction::class);
+        $group->delete('/appointments/{id:[0-9]+}', DeleteAppointmentAction::class);
     })->add(AdminMiddleware::class);
 };
