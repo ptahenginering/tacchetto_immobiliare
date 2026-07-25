@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" width="420" height="120">
+  <title>RT CASA LIVE — logo orizzontale (fondo scuro)</title>
+  <rect width="420" height="120" rx="18" fill="#0E1B2E"/>
+  <text x="30" y="84" font-family="'Playfair Display', Georgia, serif" font-size="66" font-weight="600" fill="#F6F2EA">R</text>
+  <text x="53" y="91" font-family="'Playfair Display', Georgia, serif" font-size="66" font-weight="600" fill="#C29B52">T</text>
+  <text x="130" y="72" font-family="Jost, 'Segoe UI', sans-serif" font-size="30" font-weight="500" letter-spacing="9" fill="#F6F2EA">CASA <tspan fill="#C29B52">LIVE</tspan></text>
+  <text x="132" y="95" font-family="Jost, 'Segoe UI', sans-serif" font-size="10.5" font-weight="400" letter-spacing="3.4" fill="#DCC28C">TRASPARENZA · CONTROLLO · RISULTATI</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <title>Placeholder immobile — casa line-art su avorio</title>
+  <rect width="800" height="500" fill="#F6F2EA"/>
+  <g fill="none" stroke="#C29B52" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- tetto -->
+    <path d="M290 250 L400 160 L510 250"/>
+    <path d="M310 235 L310 210 L335 210 L335 215"/>
+    <!-- corpo casa -->
+    <path d="M315 245 L315 350 L485 350 L485 245"/>
+    <!-- porta -->
+    <path d="M380 350 L380 295 Q400 285 420 295 L420 350"/>
+    <!-- finestre -->
+    <rect x="332" y="270" width="30" height="30" rx="3"/>
+    <rect x="438" y="270" width="30" height="30" rx="3"/>
+    <path d="M347 270 v30 M332 285 h30 M453 270 v30 M438 285 h30" stroke-width="1.6"/>
+    <!-- linea terra -->
+    <path d="M250 350 L550 350" stroke-opacity=".55"/>
+    <path d="M265 365 L535 365" stroke-opacity=".25" stroke-width="2"/>
+  </g>
+  <g font-family="Jost, 'Segoe UI', sans-serif" text-anchor="middle">
+    <text x="400" y="415" font-size="17" letter-spacing="5" fill="#5C6B80">FOTO IN ARRIVO</text>
+    <text x="400" y="443" font-size="11.5" letter-spacing="3" fill="#C29B52">RT CASA LIVE</text>
+  </g>
+</svg>

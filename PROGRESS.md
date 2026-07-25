@@ -36,7 +36,7 @@
 | T32 — Admin Visite & Proposte | ✅ | Form visita con stelle+label visitatore e avviso privacy/visibilità; proposte con cambio stato pipeline inline e toggle occhio |
 | T33 — Admin Marketing + AI | ✅ | Registro attività con stats; sezione "Genera con AI" (backend POST /admin/ai/generate con Anthropic, 4 tipi, salvataggio ai_generations) → anteprima → modifica → copia/bozza scheduled_posts; tabella post con badge "pubblicazione manuale" |
 | T34 — Admin Statistiche + Impostazioni | ✅ | Statistiche con filtro periodo + export CSV client-side; impostazioni: dati agenzia, stato integrazioni da /admin/system/health, test email, gestione utenti staff (solo admin) |
-| T35 — Asset grafici | ⏳ | |
+| T35 — Asset grafici | ✅ | docs/brand/: monogramma chiaro/scuro, logo CASA LIVE con wordmark e payoff, placeholder immobile line-art, template email base HTML; favicon.svg + componente <RTLogo/> già nei frontend; copiati nei public |
 | T36 — Seed dati demo | ⏳ | |
 | T37 — Test | ⏳ | |
 | T38 — Hardening | ⏳ | |

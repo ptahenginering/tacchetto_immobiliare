@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>RT — monogramma (versione per fondo scuro)</title>
+  <rect width="120" height="120" rx="24" fill="#0E1B2E"/>
+  <rect x="2" y="2" width="116" height="116" rx="22" fill="none" stroke="#C29B52" stroke-opacity=".45" stroke-width="1.5"/>
+  <text x="24" y="86" font-family="'Playfair Display', Georgia, serif" font-size="72" font-weight="600" fill="#F6F2EA">R</text>
+  <text x="49" y="94" font-family="'Playfair Display', Georgia, serif" font-size="72" font-weight="600" fill="#C29B52">T</text>
+</svg>
