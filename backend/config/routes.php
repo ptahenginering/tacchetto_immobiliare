@@ -31,9 +31,12 @@ use App\Application\Actions\Auth\AdminLoginAction;
 use App\Application\Actions\Auth\RefreshTokenAction;
 use App\Application\Middleware\AdminMiddleware;
 use Slim\Routing\RouteCollectorProxy;
+use App\Application\Actions\Customer\GetMyPropertyAction;
+use App\Application\Actions\Customer\GetPropertyKpiAction;
 use App\Application\Actions\Customer\RequestAccessAction;
 use App\Application\Actions\Customer\VerifyAccessAction;
 use App\Application\Actions\PublicSite\CreateLeadAction;
+use App\Application\Middleware\CustomerMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -67,6 +70,12 @@ return function (App $app): void {
 
     // --- File caricati (immagini immobili) ---
     $app->get('/files/{path:.+}', ServeFileAction::class);
+
+    // --- Area cliente (JWT owner) ---
+    $app->group('/customer', function (RouteCollectorProxy $group): void {
+        $group->get('/property', GetMyPropertyAction::class);
+        $group->get('/property/kpi', GetPropertyKpiAction::class);
+    })->add(CustomerMiddleware::class);
 
     // --- Gestionale (JWT admin/agent) ---
     $app->group('/admin', function (RouteCollectorProxy $group): void {
