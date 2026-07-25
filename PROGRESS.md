@@ -28,7 +28,7 @@
 | T24 — Customer Promozione | ✅ | Card per canale con stats leggibili (1.234 visualizzazioni · 8 contatti), link esterno, label canali |
 | T25 — Customer Pratiche | ✅ | Stepper verticale (✓ oro/in corso/da fare), barra % completamento, copy rassicurante |
 | T26 — Customer Assistente + Profilo | ✅ | Chat bolle navy/avorio con typing indicator e disclaimer, sessione persistente; profilo con contatti Roberto (tel/mailto) e logout |
-| T27 — Admin base | ⏳ | |
+| T27 — Admin base | ✅ | Login brandizzato, sidebar navy 9 voci + topbar con ricerca globale, Zustand (auth persist + UI), routing protetto, client API con 401→logout, tipi e label condivise; build OK |
 | T28 — Admin Dashboard | ⏳ | |
 | T29 — Admin Lead | ⏳ | |
 | T30 — Admin Immobili | ⏳ | |
