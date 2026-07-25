@@ -30,6 +30,10 @@ $container = new Container();
 $container->set(Logger::class, fn () => new Logger(__DIR__ . '/../logs/app.log'));
 $container->set(PDO::class, fn () => Connection::get());
 $container->set(
+    \App\Infrastructure\Upload\ImageUploadService::class,
+    fn () => new \App\Infrastructure\Upload\ImageUploadService(__DIR__ . '/../storage/uploads')
+);
+$container->set(
     \App\Domain\Mail\MailerInterface::class,
     function (Container $c) {
         $appUrl = $_ENV['APP_URL'] ?? 'https://tacchettoimmobiliare.it';

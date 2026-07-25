@@ -6,6 +6,13 @@ use App\Application\Actions\Admin\Leads\ConvertLeadAction;
 use App\Application\Actions\Admin\Leads\GetLeadAction;
 use App\Application\Actions\Admin\Leads\ListLeadsAction;
 use App\Application\Actions\Admin\Leads\UpdateLeadAction;
+use App\Application\Actions\Admin\Properties\DeletePropertyAction;
+use App\Application\Actions\Admin\Properties\GetPropertyAction;
+use App\Application\Actions\Admin\Properties\ListPropertiesAction;
+use App\Application\Actions\Admin\Properties\ManagePropertyImageAction;
+use App\Application\Actions\Admin\Properties\SavePropertyAction;
+use App\Application\Actions\Admin\Properties\UploadPropertyImagesAction;
+use App\Application\Actions\PublicSite\ServeFileAction;
 use App\Application\Actions\Auth\AdminLoginAction;
 use App\Application\Actions\Auth\RefreshTokenAction;
 use App\Application\Middleware\AdminMiddleware;
@@ -44,6 +51,9 @@ return function (App $app): void {
     // --- Endpoint pubblici sito vetrina ---
     $app->post('/public/leads', CreateLeadAction::class);
 
+    // --- File caricati (immagini immobili) ---
+    $app->get('/files/{path:.+}', ServeFileAction::class);
+
     // --- Gestionale (JWT admin/agent) ---
     $app->group('/admin', function (RouteCollectorProxy $group): void {
         // Lead
@@ -51,5 +61,16 @@ return function (App $app): void {
         $group->get('/leads/{id:[0-9]+}', GetLeadAction::class);
         $group->put('/leads/{id:[0-9]+}', UpdateLeadAction::class);
         $group->post('/leads/{id:[0-9]+}/convert', ConvertLeadAction::class);
+
+        // Immobili
+        $group->get('/properties', ListPropertiesAction::class);
+        $group->post('/properties', SavePropertyAction::class);
+        $group->get('/properties/{id:[0-9]+}', GetPropertyAction::class);
+        $group->put('/properties/{id:[0-9]+}', SavePropertyAction::class);
+        $group->delete('/properties/{id:[0-9]+}', DeletePropertyAction::class);
+        $group->post('/properties/{id:[0-9]+}/images', UploadPropertyImagesAction::class);
+        $group->put('/properties/{id:[0-9]+}/images/order', [ManagePropertyImageAction::class, 'reorder']);
+        $group->put('/properties/{id:[0-9]+}/images/{imageId:[0-9]+}/cover', [ManagePropertyImageAction::class, 'setCover']);
+        $group->delete('/properties/{id:[0-9]+}/images/{imageId:[0-9]+}', [ManagePropertyImageAction::class, 'delete']);
     })->add(AdminMiddleware::class);
 };
