@@ -1,0 +1,47 @@
+# Sviluppo locale RT CASA LIVE
+#   docker compose up -d          → Postgres (+ opzionale stack php/nginx)
+#   php backend/bin/migrate.php   → migrazioni
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: rtcasalive-db
+    environment:
+      POSTGRES_DB: rtcasalive
+      POSTGRES_USER: rtcasalive
+      POSTGRES_PASSWORD: rtcasalive
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U rtcasalive']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  php:
+    image: php:8.2-fpm-alpine
+    container_name: rtcasalive-php
+    profiles: ['full']
+    volumes:
+      - ./backend:/var/www/backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Nota: per pdo_pgsql e gd in container usare un Dockerfile dedicato;
+    # per lo sviluppo quotidiano è più semplice PHP locale + `docker compose up postgres`.
+
+  nginx:
+    image: nginx:alpine
+    container_name: rtcasalive-nginx
+    profiles: ['full']
+    ports:
+      - '8080:80'
+    volumes:
+      - ./backend:/var/www/backend
+      - ./docs/nginx-local.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+
+volumes:
+  pgdata:

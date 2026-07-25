@@ -1,0 +1,226 @@
+name: Deploy su SiteGround
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # ------------------------------------------------------------
+  # 1. Sito vetrina statico → public_html/
+  # ------------------------------------------------------------
+  deploy-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Genera .htaccess root (HTTPS + esclusioni app/admin/api)
+        run: |
+          cat > public_html/.htaccess <<'EOF'
+          RewriteEngine On
+          RewriteCond %{HTTPS} off
+          RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+          EOF
+
+      - name: Deploy FTP sito vetrina
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./public_html/
+          server-dir: public_html/
+          state-name: .ftp-state-site.json
+          exclude: |
+            **/.git*
+            **/.git*/**
+
+  # ------------------------------------------------------------
+  # 2. Area Cliente (customer) → public_html/app/
+  # ------------------------------------------------------------
+  deploy-customer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: customer/package-lock.json
+
+      - name: Install
+        working-directory: customer
+        run: npm ci
+
+      - name: Env di build
+        working-directory: customer
+        run: |
+          cat > .env <<EOF
+          VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
+          EOF
+
+      - name: Build
+        working-directory: customer
+        run: npm run build
+
+      - name: Genera .htaccess SPA
+        run: |
+          cat > customer/dist/.htaccess <<'EOF'
+          RewriteEngine On
+          RewriteBase /app/
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule ^ /app/index.html [QSA,L]
+          <Files "index.html">
+            Header set Cache-Control "no-cache, no-store, must-revalidate"
+            Header set X-SG-Cache-Control "no-cache"
+          </Files>
+          EOF
+
+      - name: Deploy FTP area cliente
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./customer/dist/
+          server-dir: public_html/app/
+          state-name: .ftp-state-customer.json
+
+  # ------------------------------------------------------------
+  # 3. Gestionale (admin) → public_html/admin/
+  # ------------------------------------------------------------
+  deploy-admin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: admin/package-lock.json
+
+      - name: Install
+        working-directory: admin
+        run: npm ci
+
+      - name: Env di build
+        working-directory: admin
+        run: |
+          cat > .env <<EOF
+          VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
+          EOF
+
+      - name: Build
+        working-directory: admin
+        run: npm run build
+
+      - name: Genera .htaccess SPA
+        run: |
+          cat > admin/dist/.htaccess <<'EOF'
+          RewriteEngine On
+          RewriteBase /admin/
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule ^ /admin/index.html [QSA,L]
+          <Files "index.html">
+            Header set Cache-Control "no-cache, no-store, must-revalidate"
+            Header set X-SG-Cache-Control "no-cache"
+          </Files>
+          EOF
+
+      - name: Deploy FTP gestionale
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./admin/dist/
+          server-dir: public_html/admin/
+          state-name: .ftp-state-admin.json
+
+  # ------------------------------------------------------------
+  # 4. Backend API → public_html/api/ + migrazioni remote
+  # ------------------------------------------------------------
+  deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: Composer install (produzione)
+        working-directory: backend
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Genera config/.env di produzione
+        working-directory: backend
+        run: |
+          cat > config/.env <<EOF
+          APP_ENV=production
+          APP_URL=${{ secrets.APP_URL }}
+          CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          JWT_TTL_ADMIN=28800
+          JWT_TTL_OWNER=2592000
+          ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
+          ADMIN_DEFAULT_PASSWORD=${{ secrets.ADMIN_DEFAULT_PASSWORD }}
+          BREVO_API_KEY=${{ secrets.BREVO_API_KEY }}
+          MAIL_FROM=${{ secrets.MAIL_FROM }}
+          MAIL_FROM_NAME=${{ secrets.MAIL_FROM_NAME }}
+          SMTP_HOST=${{ secrets.SMTP_HOST }}
+          SMTP_PORT=${{ secrets.SMTP_PORT }}
+          SMTP_USER=${{ secrets.SMTP_USER }}
+          SMTP_PASS=${{ secrets.SMTP_PASS }}
+          LEAD_AUTORESPONDER=${{ secrets.LEAD_AUTORESPONDER }}
+          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL=${{ secrets.ANTHROPIC_MODEL }}
+          UPLOAD_MAX_MB=8
+          MIGRATION_KEY=${{ secrets.MIGRATION_KEY }}
+          META_APP_ID=
+          META_APP_SECRET=
+          LINKEDIN_CLIENT_ID=
+          LINKEDIN_CLIENT_SECRET=
+          EOF
+
+      - name: Deploy FTP backend
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./backend/
+          server-dir: public_html/api/
+          state-name: .ftp-state-backend.json
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/tests/**
+            **/node_modules/**
+            **/.phpunit.cache/**
+            phpunit.xml
+            **/storage/uploads/**
+
+      - name: Esegui migrazioni remote
+        run: |
+          echo "Attendo la propagazione dei file…"
+          sleep 10
+          HTTP_CODE=$(curl -s -o /tmp/migrate.json -w "%{http_code}" \
+            "${{ secrets.APP_URL }}/api/public/run-migrations.php?key=${{ secrets.MIGRATION_KEY }}")
+          cat /tmp/migrate.json
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "::error::Migrazioni fallite (HTTP $HTTP_CODE)"
+            exit 1
+          fi
+
+      - name: Health check
+        run: |
+          curl -sf "${{ secrets.APP_URL }}/api/health" || (echo "::error::Health check fallito" && exit 1)

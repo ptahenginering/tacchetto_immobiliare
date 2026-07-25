@@ -1,0 +1,19 @@
+# RT CASA LIVE — API (deployata in public_html/api/)
+RewriteEngine On
+
+# Blocca l'accesso diretto a config, migrazioni, log, bin, vendor
+RewriteRule ^(config|migrations|logs|bin|tests|vendor/composer)($|/) - [F,L]
+RewriteRule ^vendor/.*\.(md|json|lock|dist|txt)$ - [F,L]
+
+# Endpoint pubblici diretti in public/
+RewriteRule ^public/(run-migrations\.php)$ public/$1 [L]
+
+# Tutto il resto → front controller Slim
+RewriteCond %{REQUEST_URI} !^.*/public/
+RewriteRule ^(.*)$ public/index.php [QSA,L]
+
+# Le risposte API non vanno mai in cache (incl. cache SiteGround)
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set X-SG-Cache-Control "no-cache"
+</IfModule>
