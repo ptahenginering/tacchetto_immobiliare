@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roberto Tacchetto — Real Estate Advisor | Treviso e provincia</title>
+<meta name="description" content="Consulenza personalizzata per vendere o gestire il tuo immobile in modo sicuro e vantaggioso. Valutazione gratuita, assistenza completa fino al rogito. Treviso e provincia.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&family=Allura&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-deep:#0E1B2E;
+  --navy:#16273F;
+  --navy-panel:#1C3050;
+  --gold:#C29B52;
+  --gold-light:#DCC28C;
+  --ivory:#F6F2EA;
+  --ivory-soft:#FBF9F4;
+  --ink:#16273F;
+  --grey:#5C6B80;
+  --line-gold:rgba(194,155,82,.45);
+  --shadow:0 24px 60px rgba(14,27,46,.18);
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;font-weight:400;color:var(--ink);background:var(--ivory);line-height:1.65;font-size:17px}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.15}
+.container{width:min(1160px,92%);margin:0 auto}
+.script{font-family:'Allura',cursive;color:var(--gold);font-weight:400}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;text-transform:uppercase;letter-spacing:.32em;font-size:.72rem;font-weight:500;color:var(--gold)}
+.eyebrow::before,.eyebrow::after{content:"";height:1px;width:34px;background:var(--line-gold)}
+.gold{color:var(--gold)}
+section{padding:104px 0}
+@media(max-width:760px){section{padding:72px 0}}
+
+/* ---------- Monogramma RT ---------- */
+.rt-mono{font-family:'Playfair Display',serif;font-weight:500;line-height:1;display:inline-block;position:relative;white-space:nowrap}
+.rt-mono .r{color:var(--navy);position:relative;z-index:2}
+.rt-mono .t{color:var(--gold);margin-left:-0.34em;position:relative;z-index:1;top:0.10em}
+.rt-mono.on-dark .r{color:#fff}
+
+/* ---------- Nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(14,27,46,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(194,155,82,.25)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:76px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand .rt-mono{font-size:2.1rem}
+.brand-name{color:#fff;font-family:'Playfair Display',serif;font-size:1.02rem;letter-spacing:.14em;text-transform:uppercase}
+.brand-name small{display:block;font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.34em;color:var(--gold-light);margin-top:2px}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{color:#E8E3D8;font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;transition:color .25s}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--gold-light)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;padding:14px 30px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:transform .25s,box-shadow .25s,background .25s,color .25s}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.btn-gold{background:linear-gradient(135deg,#D3AE66,#B98F45);color:#101F35;box-shadow:0 10px 26px rgba(194,155,82,.35)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(194,155,82,.45)}
+.btn-outline{border-color:var(--line-gold);color:var(--gold)}
+.btn-outline:hover{background:rgba(194,155,82,.1)}
+.btn-navy{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn-navy:hover{background:var(--navy-panel)}
+.nav .btn{padding:11px 24px}
+.nav-toggle{display:none;background:none;border:none;color:var(--gold);font-size:1.7rem;cursor:pointer}
+@media(max-width:900px){
+  .nav-links{position:fixed;inset:76px 0 auto 0;background:var(--navy-deep);flex-direction:column;padding:28px 0 36px;gap:22px;transform:translateY(-130%);transition:transform .35s;border-bottom:1px solid var(--line-gold)}
+  .nav-links.open{transform:translateY(0)}
+  .nav-toggle{display:block}
+}
+
+/* ---------- Hero ---------- */
+.hero{padding:170px 0 0;background:
+  radial-gradient(1200px 500px at 85% -10%,rgba(194,155,82,.14),transparent 60%),
+  var(--ivory)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:end}
+.hero h1{font-size:clamp(2.6rem,5.4vw,4.4rem);font-weight:600;letter-spacing:.01em;margin:26px 0 8px}
+.hero h1 .gold{font-style:italic}
+.hero p.lead{font-size:1.12rem;font-weight:300;color:var(--grey);max-width:46ch;margin-bottom:34px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:44px}
+.hero-note{display:flex;align-items:center;gap:10px;color:var(--grey);font-size:.9rem;margin-bottom:56px}
+.hero-note svg{flex:none}
+.hero-photo{position:relative;align-self:end}
+.hero-photo img{width:100%;max-width:470px;margin-left:auto;filter:drop-shadow(0 30px 50px rgba(14,27,46,.28))}
+.hero-photo::before{content:"RT";position:absolute;right:-4%;top:2%;font-family:'Playfair Display',serif;font-size:clamp(9rem,20vw,17rem);color:rgba(22,39,63,.055);line-height:1;z-index:0;letter-spacing:-.08em}
+.hero-photo img{position:relative;z-index:1}
+@media(max-width:900px){
+  .hero{padding-top:130px}
+  .hero-grid{grid-template-columns:1fr;gap:20px}
+  .hero-photo img{max-width:340px;margin:0 auto}
+}
+
+/* ---------- Trust strip ---------- */
+.trust{background:var(--navy);padding:0}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.trust-item{padding:38px 22px;text-align:center;border-left:1px solid rgba(194,155,82,.22)}
+.trust-item:first-child{border-left:none}
+.trust-item svg{margin:0 auto 14px;display:block}
+.trust-item strong{display:block;color:#fff;font-weight:500;letter-spacing:.12em;text-transform:uppercase;font-size:.82rem}
+.trust-item span{color:#AEB9C9;font-size:.86rem;font-weight:300}
+@media(max-width:820px){.trust-grid{grid-template-columns:repeat(2,1fr)}.trust-item:nth-child(3){border-left:none}}
+@media(max-width:460px){.trust-grid{grid-template-columns:1fr}.trust-item{border-left:none;border-top:1px solid rgba(194,155,82,.22)}.trust-item:first-child{border-top:none}}
+
+/* ---------- Chi sono ---------- */
+.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:center}
+.about-photo{position:relative}
+.about-photo img{border-radius:var(--radius);box-shadow:var(--shadow)}
+.about-photo::after{content:"";position:absolute;inset:22px -22px -22px 22px;border:1px solid var(--line-gold);border-radius:var(--radius);z-index:-1}
+.about h2{font-size:clamp(2rem,3.6vw,2.8rem);margin:22px 0 20px;font-weight:600}
+.about p{color:var(--grey);font-weight:300;margin-bottom:18px}
+.about .signature{font-size:2.4rem;margin-top:26px}
+.about .role-line{margin-top:2px;font-size:.74rem;letter-spacing:.3em;text-transform:uppercase;color:var(--grey)}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:44px}.about-photo{max-width:380px;margin:0 auto}}
+
+/* ---------- Servizi ---------- */
+.services{background:
+  radial-gradient(900px 400px at 10% 0%,rgba(194,155,82,.10),transparent 60%),
+  var(--navy-deep)}
+.services .eyebrow{color:var(--gold-light)}
+.services h2{color:#fff;font-size:clamp(2rem,3.6vw,2.8rem);margin:22px 0 14px;font-weight:600}
+.services .intro{color:#AEB9C9;font-weight:300;max-width:62ch}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:56px}
+.svc-card{border-radius:var(--radius);padding:44px 40px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.svc-card:hover{transform:translateY(-6px)}
+.svc-card.navy{background:var(--navy-panel);border:1px solid rgba(194,155,82,.3);color:#fff}
+.svc-card.goldbg{background:linear-gradient(150deg,#D8B876,#B98F45);color:var(--navy-deep)}
+.svc-card h3{font-size:1.65rem;margin:18px 0 12px;font-weight:600}
+.svc-card p{font-weight:300;font-size:.98rem;margin-bottom:26px}
+.svc-card.navy p{color:#C6CFDC}
+.svc-card .num{font-family:'Playfair Display',serif;font-size:1rem;letter-spacing:.2em;color:var(--gold-light)}
+.svc-card.goldbg .num{color:var(--navy-deep)}
+.svc-card a{font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;display:inline-flex;align-items:center;gap:8px}
+.svc-card.navy a{color:var(--gold-light)}
+.svc-card a:hover{gap:14px}
+.svc-card a{transition:gap .25s}
+.services .tagline{text-align:center;margin-top:54px;font-size:2rem}
+@media(max-width:800px){.svc-grid{grid-template-columns:1fr}}
+
+/* ---------- Metodo ---------- */
+.method h2{font-size:clamp(2rem,3.6vw,2.8rem);margin:22px 0 14px;font-weight:600}
+.method .intro{color:var(--grey);font-weight:300;max-width:60ch}
+.steps{margin-top:64px;display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+.steps::before{content:"";position:absolute;top:26px;left:8%;right:8%;height:1px;background:var(--line-gold)}
+.step{padding:0 18px;text-align:center;position:relative}
+.step .dot{width:52px;height:52px;border-radius:50%;background:var(--navy);color:var(--gold-light);font-family:'Playfair Display',serif;font-size:1.25rem;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative;z-index:1;border:1px solid var(--line-gold)}
+.step strong{display:block;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem;font-weight:600;margin-bottom:10px}
+.step p{font-size:.88rem;color:var(--grey);font-weight:300}
+@media(max-width:900px){
+  .steps{grid-template-columns:1fr;gap:34px;max-width:440px}
+  .steps::before{display:none}
+  .step{display:grid;grid-template-columns:52px 1fr;gap:20px;text-align:left;padding:0}
+  .step .dot{margin:0}
+}
+
+/* ---------- Vantaggi ---------- */
+.advantages{background:var(--navy);color:#fff}
+.adv-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center}
+.advantages h2{font-size:clamp(2rem,3.6vw,2.8rem);margin:22px 0 30px;font-weight:600}
+.adv-list{list-style:none}
+.adv-list li{display:flex;gap:16px;padding:15px 0;border-bottom:1px solid rgba(194,155,82,.18);font-weight:300;color:#D7DEE8}
+.adv-list li:last-child{border-bottom:none}
+.adv-list svg{flex:none;margin-top:4px}
+.pledge{background:var(--navy-deep);border:1px solid var(--line-gold);border-radius:var(--radius);padding:46px 42px;box-shadow:var(--shadow)}
+.pledge .eyebrow{color:var(--gold-light)}
+.pledge h3{font-family:'Playfair Display',serif;font-size:1.7rem;line-height:1.35;margin:18px 0 12px;font-weight:500;color:#fff}
+.pledge h3 .gold{font-style:italic}
+.pledge p{color:#AEB9C9;font-weight:300;font-size:.96rem}
+.pledge .script{font-size:2.1rem;display:block;margin-top:22px}
+@media(max-width:900px){.adv-grid{grid-template-columns:1fr;gap:46px}}
+
+/* ---------- Contatti / form ---------- */
+.contact h2{font-size:clamp(2rem,3.6vw,2.8rem);margin:22px 0 14px;font-weight:600}
+.contact .intro{color:var(--grey);font-weight:300;max-width:58ch}
+.contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;margin-top:56px;align-items:start}
+.contact-info h3{font-size:1.3rem;margin-bottom:20px;font-weight:600}
+.c-row{display:flex;gap:16px;align-items:flex-start;padding:14px 0;border-bottom:1px solid rgba(22,39,63,.1)}
+.c-row:last-of-type{border-bottom:none}
+.c-row svg{flex:none;margin-top:4px}
+.c-row strong{display:block;font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;color:var(--grey);font-weight:500;margin-bottom:2px}
+.c-row a:hover{color:var(--gold)}
+.mini-steps{margin-top:34px;background:var(--ivory-soft);border:1px solid rgba(22,39,63,.08);border-radius:var(--radius);padding:26px 28px}
+.mini-steps strong{display:block;font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.mini-steps ol{list-style:none;counter-reset:ms}
+.mini-steps li{counter-increment:ms;display:flex;gap:14px;padding:7px 0;font-size:.92rem;color:var(--grey);font-weight:300}
+.mini-steps li::before{content:counter(ms);font-family:'Playfair Display',serif;color:var(--gold);font-size:1rem;width:18px;flex:none}
+.form-card{background:var(--navy-deep);border-radius:var(--radius);padding:50px 46px;box-shadow:var(--shadow);border:1px solid rgba(194,155,82,.28)}
+.form-card h3{color:#fff;font-size:1.5rem;font-weight:600;margin-bottom:8px}
+.form-card .sub{color:#AEB9C9;font-weight:300;font-size:.94rem;margin-bottom:30px}
+.field{margin-bottom:20px}
+.field label{display:block;color:var(--gold-light);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;margin-bottom:8px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(194,155,82,.3);border-radius:8px;padding:14px 16px;color:#fff;font-family:'Jost',sans-serif;font-size:.98rem;transition:border .25s,background .25s}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C29B52' fill='none' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+.field select option{color:var(--ink)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold);background:rgba(255,255,255,.09)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.privacy{display:flex;gap:12px;align-items:flex-start;color:#8FA0B5;font-size:.82rem;font-weight:300;margin:8px 0 26px}
+.privacy input{margin-top:5px;accent-color:var(--gold)}
+.form-card .btn{width:100%}
+.form-ok{display:none;text-align:center;padding:40px 10px}
+.form-ok .check{width:70px;height:70px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 22px}
+.form-ok h3{color:#fff}
+.form-ok p{color:#AEB9C9;font-weight:300;margin-top:10px}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:46px}.field-row{grid-template-columns:1fr}.form-card{padding:38px 26px}}
+
+/* ---------- Partner ---------- */
+.partner{background:linear-gradient(150deg,var(--navy-panel),var(--navy-deep));color:#fff;border-top:1px solid var(--line-gold);border-bottom:1px solid var(--line-gold)}
+.partner-inner{display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:center}
+.partner h2{font-size:clamp(1.7rem,3vw,2.3rem);font-weight:600;margin:20px 0 14px}
+.partner p{color:#C6CFDC;font-weight:300;max-width:56ch}
+.partner .voucher{background:rgba(255,255,255,.04);border:1px dashed var(--line-gold);border-radius:var(--radius);padding:34px 32px;text-align:center}
+.partner .voucher .amount{font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold-light);line-height:1}
+.partner .voucher span{display:block;color:#AEB9C9;font-size:.86rem;font-weight:300;margin-top:10px}
+.partner .btn{margin-top:26px}
+@media(max-width:860px){.partner-inner{grid-template-columns:1fr;gap:40px}}
+
+/* ---------- Footer ---------- */
+footer{background:var(--navy-deep);color:#8FA0B5;padding:64px 0 34px;border-top:1px solid rgba(194,155,82,.25)}
+.foot-grid{display:flex;justify-content:space-between;align-items:center;gap:34px;flex-wrap:wrap}
+.foot-brand .rt-mono{font-size:2.6rem}
+.foot-brand .brand-name{margin-top:6px}
+.foot-links{display:flex;gap:26px;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase}
+.foot-links a:hover{color:var(--gold-light)}
+.foot-bottom{margin-top:44px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.82rem;font-weight:300}
+.foot-bottom .script{font-size:1.5rem}
+
+/* ---------- Reveal ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+  .btn,.svc-card{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav" aria-label="Navigazione principale">
+  <div class="container nav-inner">
+    <a class="brand" href="#top" aria-label="Roberto Tacchetto — Home">
+      <span class="rt-mono on-dark"><span class="r">R</span><span class="t">T</span></span>
+      <span class="brand-name">Roberto Tacchetto<small>Real Estate Advisor</small></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#chi-sono">Chi sono</a>
+      <a href="#servizi">Servizi</a>
+      <a href="#metodo">Metodo</a>
+      <a href="#partner">Partner RT</a>
+      <a class="btn btn-gold" href="#contatti">Consulenza gratuita</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Apri menu" aria-expanded="false">☰</button>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero" id="top">
+  <div class="container hero-grid">
+    <div class="reveal">
+      <span class="eyebrow">Treviso e provincia</span>
+      <h1>La tua casa<br>merita <span class="gold">attenzione.</span></h1>
+      <p class="lead">Consulenza personalizzata per vendere o gestire il tuo immobile in modo sicuro e vantaggioso. Ti accompagno con competenza e dedizione in ogni passo importante.</p>
+      <div class="hero-cta">
+        <a class="btn btn-navy" href="#contatti" data-req="Vendere un immobile">Voglio vendere un immobile</a>
+        <a class="btn btn-outline" href="#contatti" data-req="Ho ereditato un immobile">Ho ereditato un immobile</a>
+      </div>
+      <p class="hero-note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.6"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        Consulenza <strong>&nbsp;gratuita&nbsp;</strong>, riservata e <strong>&nbsp;senza impegno&nbsp;</strong>.
+      </p>
+    </div>
+    <div class="hero-photo reveal">
+      <img src="img/roberto-portrait-2.jpg" alt="Roberto Tacchetto, Real Estate Advisor, in abito blu con papillon">
+    </div>
+  </div>
+</header>
+
+<!-- ===================== TRUST ===================== -->
+<div class="trust" aria-label="Punti di forza">
+  <div class="container trust-grid">
+    <div class="trust-item reveal">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.4"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+      <strong>Valutazione gratuita</strong><span>Reale e strategica del tuo immobile</span>
+    </div>
+    <div class="trust-item reveal">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.4"><path d="M7 12l3 3 7-8"/><circle cx="12" cy="12" r="10"/></svg>
+      <strong>Assistenza completa</strong><span>Al tuo fianco fino al rogito</span>
+    </div>
+    <div class="trust-item reveal">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.4"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      <strong>Sicurezza e trasparenza</strong><span>Interessi tutelati in ogni fase</span>
+    </div>
+    <div class="trust-item reveal">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+      <strong>Consulenza personalizzata</strong><span>Soluzioni su misura per te</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CHI SONO ===================== -->
+<section id="chi-sono">
+  <div class="container about-grid">
+    <div class="about-photo reveal">
+      <img src="img/roberto-portrait-1.jpg" alt="Ritratto professionale di Roberto Tacchetto">
+    </div>
+    <div class="about reveal">
+      <span class="eyebrow">Chi sono</span>
+      <h2>Il valore della tua casa, la serietà di un professionista, il <span class="gold">risultato</span> che meriti.</h2>
+      <p>Sono Roberto Tacchetto, consulente immobiliare attivo a Treviso e provincia all'interno del network Tecnocasa. Ogni immobile ha una storia, un valore e un potenziale: il mio obiettivo è valorizzarlo al massimo e accompagnarti in ogni fase della vendita con professionalità e trasparenza.</p>
+      <p>Che tu voglia vendere un immobile o abbia ereditato una casa, ti seguo personalmente dalla prima valutazione fino alla firma del rogito, senza stress e senza sorprese.</p>
+      <span class="script signature">Roberto Tacchetto</span>
+      <div class="role-line">Real Estate Advisor · Tecnocasa Franchising Network</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVIZI ===================== -->
+<section class="services" id="servizi">
+  <div class="container">
+    <span class="eyebrow">Come posso aiutarti</span>
+    <h2>Hai un immobile da <span class="gold">vendere</span><br>o hai <span class="gold">ereditato</span> una casa?</h2>
+    <p class="intro">Vendere casa è una scelta importante. Farlo bene fa la differenza. Un unico contatto per due esigenze diverse, con lo stesso metodo: chiaro, efficace, trasparente.</p>
+    <div class="svc-grid">
+      <article class="svc-card navy reveal">
+        <span class="num">— 01</span>
+        <h3>Vendere un immobile</h3>
+        <p>Vuoi vendere la tua casa? Affidati a chi la valorizza al meglio: analisi approfondita, foto professionali, home staging e strategie di marketing mirate per presentarla al giusto pubblico, selezionando solo acquirenti realmente interessati e con capacità di acquisto verificata.</p>
+        <a href="#contatti" data-req="Vendere un immobile">Richiedi una valutazione →</a>
+      </article>
+      <article class="svc-card goldbg reveal">
+        <span class="num">— 02</span>
+        <h3>Ho ereditato un immobile</h3>
+        <p>Hai ereditato una casa e non sai da dove iniziare? Ti guido in ogni passo: dalla verifica documentale e successoria alla definizione della strategia migliore, fino alla vendita. Ci occupiamo di tutto, collaborando con notai, tecnici e professionisti di fiducia.</p>
+        <a href="#contatti" data-req="Ho ereditato un immobile">Parliamone insieme →</a>
+      </article>
+    </div>
+    <p class="tagline script">Un unico contatto, soluzioni su misura.</p>
+  </div>
+</section>
+
+<!-- ===================== METODO ===================== -->
+<section class="method" id="metodo">
+  <div class="container">
+    <span class="eyebrow">Il mio metodo in 5 passi</span>
+    <h2>Un percorso <span class="gold">chiaro, efficace, trasparente.</span></h2>
+    <p class="intro">Ogni casa merita il giusto valore. Ogni cliente merita il massimo impegno. Ecco come lavoro, dalla prima analisi alla firma finale.</p>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="dot">1</div>
+        <div><strong>Analisi e valutazione</strong><p>Valutazione accurata dell'immobile e analisi del mercato per definire il miglior prezzo di vendita.</p></div>
+      </div>
+      <div class="step reveal">
+        <div class="dot">2</div>
+        <div><strong>Preparazione e valorizzazione</strong><p>Presentiamo la tua casa al meglio con foto professionali, descrizioni efficaci e consigli di home staging.</p></div>
+      </div>
+      <div class="step reveal">
+        <div class="dot">3</div>
+        <div><strong>Promozione mirata</strong><p>Pubblicizziamo l'immobile sui principali portali, sui social e attraverso la nostra rete di contatti.</p></div>
+      </div>
+      <div class="step reveal">
+        <div class="dot">4</div>
+        <div><strong>Selezione acquirenti</strong><p>Gestiamo le richieste, organizziamo le visite e selezioniamo solo acquirenti realmente interessati e qualificati.</p></div>
+      </div>
+      <div class="step reveal">
+        <div class="dot">5</div>
+        <div><strong>Trattativa e rogito</strong><p>Ti assistiamo nella trattativa e seguiamo tutta la parte burocratica fino alla firma del rogito, senza stress.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VANTAGGI ===================== -->
+<section class="advantages">
+  <div class="container adv-grid">
+    <div class="reveal">
+      <span class="eyebrow" style="color:var(--gold-light)">I vantaggi di affidarti a me</span>
+      <h2>Zero pensieri.<br><span class="gold" style="font-style:italic">Pensiamo a tutto noi.</span></h2>
+      <ul class="adv-list">
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.8"><path d="M5 13l4 4L19 7"/></svg>Valutazione reale e strategica del tuo immobile</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.8"><path d="M5 13l4 4L19 7"/></svg>Massima visibilità sui principali canali online e offline</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.8"><path d="M5 13l4 4L19 7"/></svg>Piano di marketing personalizzato</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.8"><path d="M5 13l4 4L19 7"/></svg>Assistenza dedicata e costante, dalla valutazione al rogito</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.8"><path d="M5 13l4 4L19 7"/></svg>Trattativa seguita passo passo, tutelando i tuoi interessi</li>
+      </ul>
+    </div>
+    <div class="pledge reveal">
+      <span class="eyebrow">Il mio impegno è semplice</span>
+      <h3>Ottenere il <span class="gold">miglior risultato</span> nel minor tempo possibile, con la massima sicurezza.</h3>
+      <p>Affidati a chi conosce davvero il mercato e lavora per i tuoi interessi. Professionalità, trasparenza e risultati concreti: questo è ciò che porto in ogni incarico.</p>
+      <span class="script">La tua casa. Il tuo futuro. Il mio impegno.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTATTI ===================== -->
+<section class="contact" id="contatti">
+  <div class="container">
+    <span class="eyebrow">Contattami</span>
+    <h2>Vendere casa è importante.<br><span class="gold">Farlo bene è fondamentale.</span></h2>
+    <p class="intro">Compila la richiesta in meno di un minuto. Ti ricontatterò personalmente per offrirti una consulenza riservata e senza impegno.</p>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Un solo passo per iniziare. Il resto lo faccio io.</h3>
+        <div class="c-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.6"><path d="M4 5c0 8 7 15 15 15l2-4-4-2-2 2c-3-1.5-5.5-4-7-7l2-2-2-4z"/></svg>
+          <div><strong>Telefono</strong><a href="tel:+393457771822">+39 345 7771822</a></div>
+        </div>
+        <div class="c-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          <div><strong>Email</strong><a href="mailto:info@rtimmobiliare.it">info@rtimmobiliare.it</a></div>
+        </div>
+        <div class="c-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18-3-3-3-15 0-18z"/></svg>
+          <div><strong>Sito web</strong><a href="https://www.rtimmobiliare.it" target="_blank" rel="noopener">www.rtimmobiliare.it</a></div>
+        </div>
+        <div class="c-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.6"><path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <div><strong>Zona operativa</strong>Treviso e provincia</div>
+        </div>
+
+        <div class="mini-steps">
+          <strong>Semplice, veloce, diretto</strong>
+          <ol>
+            <li>Compila i tuoi dati: nome, cognome, email e telefono</li>
+            <li>Invia la richiesta: ti contatterò al più presto</li>
+            <li>Parliamo delle tue esigenze e analizziamo insieme la soluzione</li>
+            <li>Tutto pensato per te: professionalità e risultati concreti</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="form-card reveal">
+        <form id="rtForm" novalidate>
+          <h3>Richiedi una consulenza gratuita</h3>
+          <p class="sub">I tuoi dati sono protetti e non saranno condivisi.</p>
+          <div class="field-row">
+            <div class="field"><label for="nome">Nome</label><input id="nome" name="nome" type="text" autocomplete="given-name" required></div>
+            <div class="field"><label for="cognome">Cognome</label><input id="cognome" name="cognome" type="text" autocomplete="family-name" required></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="telefono">Telefono</label><input id="telefono" name="telefono" type="tel" autocomplete="tel" required></div>
+          </div>
+          <div class="field">
+            <label for="richiesta">Come posso aiutarti?</label>
+            <select id="richiesta" name="richiesta" required>
+              <option value="Vendere un immobile">Voglio vendere un immobile</option>
+              <option value="Ho ereditato un immobile">Ho ereditato un immobile</option>
+              <option value="Altra richiesta">Altra richiesta</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="messaggio">Messaggio (facoltativo)</label>
+            <textarea id="messaggio" name="messaggio" rows="3"></textarea>
+          </div>
+          <label class="privacy"><input type="checkbox" id="privacy" required> Ho letto l'informativa privacy e acconsento al trattamento dei miei dati per essere ricontattato.</label>
+          <button class="btn btn-gold" type="submit">Invia la richiesta</button>
+        </form>
+        <div class="form-ok" id="formOk" role="status">
+          <div class="check"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C29B52" stroke-width="1.8"><path d="M5 13l4 4L19 7"/></svg></div>
+          <h3>Grazie!</h3>
+          <p>La tua richiesta è pronta per l'invio.<br>Ti contatterò personalmente al più presto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTNER ===================== -->
+<section class="partner" id="partner">
+  <div class="container partner-inner">
+    <div class="reveal">
+      <span class="eyebrow" style="color:var(--gold-light)">Partner RT — Insieme creiamo valore</span>
+      <h2>Hai un locale? Trasforma ogni segnalazione in un <span class="gold" style="font-style:italic">vantaggio concreto.</span></h2>
+      <p>Il tuo locale è un punto di riferimento per tante persone. Diventa partner di fiducia: installi gratuitamente l'espositore RT con QR code personalizzato, i tuoi clienti ci contattano e noi gestiamo tutta la pratica con professionalità e trasparenza. Nessun costo per te, un servizio utile per i tuoi clienti e un premio concreto per ogni vendita conclusa.</p>
+      <a class="btn btn-outline" href="#contatti" data-req="Altra richiesta">Diventa Partner RT</a>
+    </div>
+    <div class="voucher reveal">
+      <div class="amount">50€</div>
+      <span>Buono regalo da utilizzare presso <em>Ettore. — Sapori, vini, emozioni</em><br>riconosciuto al tuo locale per ogni incarico di vendita segnalato e concluso con successo.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="rt-mono on-dark"><span class="r">R</span><span class="t">T</span></span>
+        <div class="brand-name">Roberto Tacchetto<small>Real Estate Advisor</small></div>
+      </div>
+      <div class="foot-links">
+        <a href="#chi-sono">Chi sono</a>
+        <a href="#servizi">Servizi</a>
+        <a href="#metodo">Metodo</a>
+        <a href="#contatti">Contatti</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> Roberto Tacchetto · Real Estate Advisor · Tecnocasa Franchising Network · Treviso e provincia</span>
+      <span class="script">Mi prendo cura dei tuoi obiettivi.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Anno corrente
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Menu mobile
+const toggle = document.getElementById('navToggle');
+const links = document.getElementById('navLinks');
+toggle.addEventListener('click', () => {
+  const open = links.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', open);
+});
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  links.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+}));
+
+// Preselezione della richiesta dai bottoni CTA
+document.querySelectorAll('[data-req]').forEach(el => {
+  el.addEventListener('click', () => {
+    const sel = document.getElementById('richiesta');
+    if (sel) sel.value = el.dataset.req;
+  });
+});
+
+// Reveal on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Invio form: apre il client email con i dati precompilati (mailto).
+// Per l'invio diretto collegare un backend o un servizio tipo Formspree.
+document.getElementById('rtForm').addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  if (!this.checkValidity()) { this.reportValidity(); return; }
+  const d = Object.fromEntries(new FormData(this).entries());
+  const body = encodeURIComponent(
+    `Nuova richiesta dal sito\n\nNome: ${d.nome}\nCognome: ${d.cognome}\nEmail: ${d.email}\nTelefono: ${d.telefono}\nRichiesta: ${d.richiesta}\n\nMessaggio:\n${d.messaggio || '-'}`
+  );
+  window.location.href = `mailto:info@rtimmobiliare.it?subject=${encodeURIComponent('Richiesta consulenza — ' + d.richiesta)}&body=${body}`;
+  this.style.display = 'none';
+  document.getElementById('formOk').style.display = 'block';
+});
+</script>
+</body>
+</html>
