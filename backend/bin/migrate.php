@@ -3,20 +3,19 @@
 declare(strict_types=1);
 
 /**
- * Migration runner RT CASA LIVE.
+ * Migration runner RT CASA LIVE (CLI).
  *
- * Esegue in ordine alfabetico i file backend/migrations/NNN_*.sql non ancora
- * applicati e li registra in schema_migrations. Idempotente: rilanciarlo è
- * sempre sicuro.
+ * Esegue le migrazioni in backend/migrations/ e assicura l'utente admin iniziale.
+ * Idempotente: rilanciarlo è sempre sicuro.
  *
- * Uso: php bin/migrate.php
+ * Uso: php bin/migrate.php [--reset-admin-password]
  */
 
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Infrastructure\Database\Connection;
+use App\Infrastructure\Database\Migrator;
 
-// Carica env da config/.env se presente (in produzione le env possono già esserci)
 $envDir = __DIR__ . '/../config';
 if (is_file($envDir . '/.env')) {
     Dotenv\Dotenv::createImmutable($envDir)->load();
@@ -31,48 +30,20 @@ try {
     exit(1);
 }
 
-$pdo->exec(
-    'CREATE TABLE IF NOT EXISTS schema_migrations (
-        version VARCHAR(255) PRIMARY KEY,
-        applied_at TIMESTAMPTZ NOT NULL DEFAULT now()
-    )'
-);
+$migrator = new Migrator($pdo, __DIR__ . '/../migrations');
 
-$applied = $pdo->query('SELECT version FROM schema_migrations')->fetchAll(PDO::FETCH_COLUMN);
-$applied = array_flip($applied);
-
-$files = glob(__DIR__ . '/../migrations/*.sql') ?: [];
-sort($files, SORT_STRING);
-
-$ran = 0;
-foreach ($files as $file) {
-    $version = basename($file);
-    if (isset($applied[$version])) {
-        continue;
-    }
-
-    $sql = file_get_contents($file);
-    if ($sql === false || trim($sql) === '') {
-        fwrite(STDERR, "  ! {$version}: file vuoto o illeggibile, salto\n");
-        continue;
-    }
-
-    echo "  → {$version}... ";
-    try {
-        $pdo->beginTransaction();
-        $pdo->exec($sql);
-        $stmt = $pdo->prepare('INSERT INTO schema_migrations (version) VALUES (:v)');
-        $stmt->execute(['v' => $version]);
-        $pdo->commit();
-        echo "OK\n";
-        $ran++;
-    } catch (Throwable $e) {
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-        fwrite(STDERR, "ERRORE\n  {$e->getMessage()}\n");
-        exit(1);
-    }
+try {
+    $ran = $migrator->run();
+} catch (Throwable $e) {
+    fwrite(STDERR, "ERRORE: {$e->getMessage()}\n");
+    exit(1);
 }
 
-echo $ran === 0 ? "Nessuna migrazione da applicare, schema aggiornato.\n" : "Applicate {$ran} migrazioni.\n";
+foreach ($ran as $version) {
+    echo "  → {$version} OK\n";
+}
+echo $ran === [] ? "Nessuna migrazione da applicare, schema aggiornato.\n" : 'Applicate ' . count($ran) . " migrazioni.\n";
+
+$resetPwd = in_array('--reset-admin-password', $argv, true);
+$adminResult = $migrator->ensureAdminUser($resetPwd);
+echo "Utente admin: {$adminResult}\n";
