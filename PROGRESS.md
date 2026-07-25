@@ -17,7 +17,7 @@
 | T13 — CRUD Proposals (admin) | ✅ | CRUD con pipeline stato, email nuova_proposta SENZA importo (solo invito app), toggle visible_to_owner |
 | T14 — Marketing + practice steps (admin) | ✅ | CRUD attività promozione con stats JSONB editabili; update step burocrazia con completed_at automatico ed email step_completato (template aggiunto) se visibile |
 | T15 — Scheduler | ✅ | bin/cron.php ogni 15min: promemoria appuntamenti giorno-prima (flag reminder_sent_at), report settimanale lunedì ≥8 (idempotente via cron_runs, migrazione 016), pulizia magic link/login_attempts/throttle |
-| T16 — Statistiche admin | ⏳ | |
+| T16 — Statistiche admin | ✅ | overview KPI 30gg con delta % vs periodo precedente, leads-by-source con conversioni, performance serie settimanale 6 mesi zero-filled, funnel per immobile |
 | T17 — Dashboard proprietario (API) | ⏳ | |
 | T18 — Feed cliente (API) | ⏳ | |
 | T19 — Chatbot AI cliente | ⏳ | |

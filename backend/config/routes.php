@@ -13,6 +13,7 @@ use App\Application\Actions\Admin\Marketing\DeleteMarketingAction;
 use App\Application\Actions\Admin\Marketing\ListMarketingAction;
 use App\Application\Actions\Admin\Marketing\SaveMarketingAction;
 use App\Application\Actions\Admin\PracticeSteps\UpdatePracticeStepAction;
+use App\Application\Actions\Admin\Stats\StatsAction;
 use App\Application\Actions\Admin\Properties\DeletePropertyAction;
 use App\Application\Actions\Admin\Proposals\DeleteProposalAction;
 use App\Application\Actions\Admin\Proposals\ListProposalsAction;
@@ -112,5 +113,11 @@ return function (App $app): void {
 
         // Step burocrazia
         $group->put('/practice-steps/{id:[0-9]+}', UpdatePracticeStepAction::class);
+
+        // Statistiche
+        $group->get('/stats/overview', [StatsAction::class, 'overview']);
+        $group->get('/stats/leads-by-source', [StatsAction::class, 'leadsBySource']);
+        $group->get('/stats/performance', [StatsAction::class, 'performance']);
+        $group->get('/stats/property/{id:[0-9]+}', [StatsAction::class, 'propertyFunnel']);
     })->add(AdminMiddleware::class);
 };
