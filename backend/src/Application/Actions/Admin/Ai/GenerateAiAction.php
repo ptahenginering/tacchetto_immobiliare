@@ -19,7 +19,7 @@ use Throwable;
  */
 final class GenerateAiAction extends Action
 {
-    private const KINDS = ['annuncio', 'post_social', 'descrizione', 'email'];
+    private const KINDS = ['annuncio', 'post_social', 'descrizione', 'email', 'scheda'];
 
     public function __construct(
         private readonly PDO $pdo,
@@ -140,6 +140,7 @@ final class GenerateAiAction extends Action
             'post_social' => "Scrivi un post social (Facebook/Instagram) di 60-100 parole per promuovere questo immobile: hook nella prima riga, 2-3 emoji sobrie, 3-5 hashtag pertinenti in coda (es. #Treviso #immobiliare), CTA finale con telefono.",
             'descrizione' => 'Scrivi una descrizione breve ed elegante (40-60 parole) di questo immobile, adatta a schede sintetiche e vetrina.',
             'email' => 'Scrivi il corpo di una email di presentazione di questo immobile da inviare a potenziali acquirenti in lista: oggetto sulla prima riga (prefisso "Oggetto: "), poi corpo di 100-150 parole, tono personale, firma "Roberto Tacchetto — Real Estate Advisor".',
+            'scheda' => "Scrivi il testo per una scheda di presentazione professionale di questo immobile destinata a potenziali acquirenti: un paragrafo introduttivo evocativo (60-80 parole), poi una sezione \"Punti di forza\" con 4-6 bullet concreti (uno per riga, prefisso \"- \"), infine un paragrafo di chiusura (30-40 parole) con invito alla visita. Non ripetere i dati numerici già in tabella (mq, prezzo, locali): valorizza contesto, luce, distribuzione degli spazi e zona.",
         };
 
         $notes = $extraNotes ? "\n\nIndicazioni aggiuntive dell'agente: {$extraNotes}" : '';

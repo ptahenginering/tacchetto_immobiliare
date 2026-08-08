@@ -6,6 +6,7 @@ import { Copy, Plus, Sparkles, Trash2 } from 'lucide-react'
 import { api } from '@/api/client'
 import { CHANNEL_LABELS, type MarketingActivity, type Paginated, type Property } from '@/api/types'
 import { Badge, Field, inputCls, Modal, VisibilityToggle } from '@/components/ui'
+import CampaignStudio from '@/components/CampaignStudio'
 import { formatDate } from '@/lib/utils'
 
 interface ScheduledPost {
@@ -125,6 +126,9 @@ export default function MarketingPage() {
 
       {/* Genera con AI */}
       <AiGenerator properties={properties.data?.data ?? []} onPostSaved={() => queryClient.invalidateQueries({ queryKey: ['scheduled-posts'] })} />
+
+      {/* Campagne di acquisizione: post social JPG + volantino A5 con QR */}
+      <CampaignStudio />
 
       {/* Post programmati */}
       <section>

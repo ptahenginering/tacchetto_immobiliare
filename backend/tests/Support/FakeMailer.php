@@ -18,8 +18,9 @@ final class FakeMailer implements MailerInterface
         array $vars = [],
         ?string $relatedType = null,
         ?int $relatedId = null,
+        array $attachments = [],
     ): bool {
-        $this->sent[] = ['to' => $toEmail, 'template' => $templateKey, 'vars' => $vars];
+        $this->sent[] = ['to' => $toEmail, 'template' => $templateKey, 'vars' => $vars, 'attachments' => array_map(fn ($a) => $a['name'], $attachments)];
         return true;
     }
 }

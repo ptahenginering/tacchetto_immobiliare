@@ -26,8 +26,9 @@ import {
 } from '@/api/types'
 import { Badge, Field, inputCls, VisibilityToggle } from '@/components/ui'
 import { cn, formatDate, formatDateTime, formatEuro } from '@/lib/utils'
+import PropertySheetTab from './PropertySheetTab'
 
-const TABS = ['Dati', 'Foto', 'Visite', 'Proposte', 'Marketing', 'Pratiche', 'Statistiche'] as const
+const TABS = ['Dati', 'Foto', 'Scheda', 'Visite', 'Proposte', 'Marketing', 'Pratiche', 'Statistiche'] as const
 type Tab = (typeof TABS)[number]
 
 export default function PropertyDetail() {
@@ -87,6 +88,7 @@ export default function PropertyDetail() {
 
       {tab === 'Dati' && <DataTab property={p} onSaved={invalidate} />}
       {tab === 'Foto' && <PhotosTab property={p} onChanged={invalidate} />}
+      {tab === 'Scheda' && <PropertySheetTab property={p} />}
       {tab === 'Visite' && <VisitsTab propertyId={propertyId} />}
       {tab === 'Proposte' && <ProposalsTab propertyId={propertyId} />}
       {tab === 'Marketing' && <MarketingTab propertyId={propertyId} />}
@@ -112,6 +114,17 @@ function DataTab({ property, onSaved }: { property: Property; onSaved: () => voi
     description: property.description ?? '',
     mandate_start: property.mandate_start ?? '',
     mandate_end: property.mandate_end ?? '',
+    owner_user_id: property.owner_id?.toString() ?? '',
+  })
+
+  // Proprietari (utenti role=owner): un proprietario può avere più immobili
+  // collegati (multiproprietà), ognuno con la propria scheda.
+  const owners = useQuery({
+    queryKey: ['owner-users'],
+    queryFn: () =>
+      api<{ data: { id: number; first_name: string; last_name: string; email: string }[] }>(
+        '/admin/users?role=owner',
+      ).then((r) => r.data),
   })
 
   const save = useMutation({
@@ -125,6 +138,7 @@ function DataTab({ property, onSaved }: { property: Property; onSaved: () => voi
           price: form.price || null,
           mandate_start: form.mandate_start || null,
           mandate_end: form.mandate_end || null,
+          owner_user_id: form.owner_user_id ? Number(form.owner_user_id) : null,
         },
       }),
     onSuccess: () => {
@@ -201,6 +215,16 @@ function DataTab({ property, onSaved }: { property: Property; onSaved: () => voi
             <input type="date" value={form.mandate_end} onChange={set('mandate_end')} className={inputCls} />
           </Field>
         </div>
+        <Field label="Proprietario (accede all'area cliente)">
+          <select value={form.owner_user_id} onChange={set('owner_user_id')} className={inputCls}>
+            <option value="">— Nessun proprietario collegato —</option>
+            {(owners.data ?? []).map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.first_name} {o.last_name} · {o.email}
+              </option>
+            ))}
+          </select>
+        </Field>
       </div>
       <Field label="Descrizione">
         <textarea rows={5} value={form.description} onChange={set('description')} className={inputCls} />

@@ -129,6 +129,17 @@ function CreatePropertyModal({ onClose }: { onClose: () => void }) {
     rooms: '',
     price: '',
     inherited: false,
+    owner_user_id: '',
+  })
+
+  // Proprietari esistenti: collegando lo stesso proprietario a più immobili
+  // si gestisce la multiproprietà (es. più unità nella stessa palazzina).
+  const owners = useQuery({
+    queryKey: ['owner-users'],
+    queryFn: () =>
+      api<{ data: { id: number; first_name: string; last_name: string; email: string }[] }>(
+        '/admin/users?role=owner',
+      ).then((r) => r.data),
   })
 
   const create = useMutation({
@@ -140,6 +151,7 @@ function CreatePropertyModal({ onClose }: { onClose: () => void }) {
           surface_sqm: form.surface_sqm || undefined,
           rooms: form.rooms || undefined,
           price: form.price || undefined,
+          owner_user_id: form.owner_user_id ? Number(form.owner_user_id) : undefined,
         },
       }),
     onSuccess: (res) => {
@@ -195,6 +207,16 @@ function CreatePropertyModal({ onClose }: { onClose: () => void }) {
           </div>
           <Field label="Prezzo richiesto (€)">
             <input type="number" min="0" step="1000" value={form.price} onChange={set('price')} className={inputCls} />
+          </Field>
+          <Field label="Proprietario (opzionale)">
+            <select value={form.owner_user_id} onChange={set('owner_user_id')} className={inputCls}>
+              <option value="">— Da collegare in seguito —</option>
+              {(owners.data ?? []).map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.first_name} {o.last_name} · {o.email}
+                </option>
+              ))}
+            </select>
           </Field>
         </div>
         <label className="flex items-center gap-2 text-sm text-navy">

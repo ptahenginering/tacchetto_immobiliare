@@ -26,11 +26,16 @@ final class GetPropertyKpiAction extends Action
     public function __invoke(Request $request, Response $response): Response
     {
         $uid = (int) $request->getAttribute('auth_uid');
+        $requestedId = (int) ($request->getQueryParams()['property_id'] ?? 0);
 
-        $prop = $this->pdo->prepare(
-            'SELECT id FROM properties WHERE owner_user_id = :uid AND agency_id = 1 ORDER BY created_at DESC LIMIT 1'
-        );
-        $prop->execute(['uid' => $uid]);
+        $sql = 'SELECT id FROM properties WHERE owner_user_id = :uid AND agency_id = 1';
+        $params = ['uid' => $uid];
+        if ($requestedId > 0) {
+            $sql .= ' AND id = :pid';
+            $params['pid'] = $requestedId;
+        }
+        $prop = $this->pdo->prepare($sql . ' ORDER BY created_at DESC LIMIT 1');
+        $prop->execute($params);
         $property = $prop->fetch();
 
         if (!$property) {

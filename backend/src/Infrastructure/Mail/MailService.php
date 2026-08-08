@@ -34,6 +34,7 @@ final class MailService implements MailerInterface
         array $vars = [],
         ?string $relatedType = null,
         ?int $relatedId = null,
+        array $attachments = [],
     ): bool {
         try {
             $rendered = $this->templates->render($templateKey, $vars);
@@ -48,7 +49,7 @@ final class MailService implements MailerInterface
         // 1. Brevo
         if ($this->brevo !== null && $this->brevo->isConfigured()) {
             try {
-                $this->brevo->sendEmail($toEmail, $subject, $html);
+                $this->brevo->sendEmail($toEmail, $subject, $html, $attachments);
                 $this->log($toEmail, $templateKey, $subject, 'inviata', null, $relatedType, $relatedId);
                 return true;
             } catch (Throwable $e) {
@@ -61,7 +62,7 @@ final class MailService implements MailerInterface
         $smtpHost = $_ENV['SMTP_HOST'] ?? getenv('SMTP_HOST') ?: '';
         if ($smtpHost !== '') {
             try {
-                $this->sendViaSmtp($toEmail, $subject, $html, $smtpHost);
+                $this->sendViaSmtp($toEmail, $subject, $html, $smtpHost, $attachments);
                 $this->log($toEmail, $templateKey, $subject, 'inviata', null, $relatedType, $relatedId);
                 return true;
             } catch (Throwable $e) {
@@ -86,7 +87,8 @@ final class MailService implements MailerInterface
         return false;
     }
 
-    private function sendViaSmtp(string $toEmail, string $subject, string $html, string $smtpHost): void
+    /** @param array<int, array{name: string, content: string}> $attachments */
+    private function sendViaSmtp(string $toEmail, string $subject, string $html, string $smtpHost, array $attachments = []): void
     {
         $mail = new PHPMailer(true);
         $mail->isSMTP();
@@ -110,6 +112,10 @@ final class MailService implements MailerInterface
         $mail->Subject = $subject;
         $mail->Body = $html;
         $mail->AltBody = strip_tags(preg_replace('/<br\s*\/?>/i', "\n", $html) ?? '');
+
+        foreach ($attachments as $att) {
+            $mail->addStringAttachment($att['content'], $att['name']);
+        }
 
         $mail->send();
     }

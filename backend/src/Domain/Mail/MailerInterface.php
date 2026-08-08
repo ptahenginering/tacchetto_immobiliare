@@ -18,6 +18,7 @@ interface MailerInterface
      * @param array<string, mixed> $vars variabili per il template
      * @param string|null $relatedType entità collegata (lead, visit, proposal, ...)
      * @param int|null $relatedId id entità collegata
+     * @param array<int, array{name: string, content: string}> $attachments allegati (contenuto binario)
      * @return bool true se inviata (o accettata dal provider)
      */
     public function send(
@@ -26,5 +27,6 @@ interface MailerInterface
         array $vars = [],
         ?string $relatedType = null,
         ?int $relatedId = null,
+        array $attachments = [],
     ): bool;
 }

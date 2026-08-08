@@ -28,6 +28,7 @@ use App\Application\Actions\Admin\Visits\SaveVisitAction;
 use App\Application\Actions\Admin\Properties\GetPropertyAction;
 use App\Application\Actions\Admin\Properties\ListPropertiesAction;
 use App\Application\Actions\Admin\Properties\ManagePropertyImageAction;
+use App\Application\Actions\Admin\Properties\PropertyBrochureAction;
 use App\Application\Actions\Admin\Properties\SavePropertyAction;
 use App\Application\Actions\Admin\Properties\UploadPropertyImagesAction;
 use App\Application\Actions\PublicSite\ServeFileAction;
@@ -79,6 +80,7 @@ return function (App $app): void {
 
     // --- Area cliente (JWT owner) ---
     $app->group('/customer', function (RouteCollectorProxy $group): void {
+        $group->get('/properties', [GetMyPropertyAction::class, 'list']);
         $group->get('/property', GetMyPropertyAction::class);
         $group->get('/property/kpi', GetPropertyKpiAction::class);
         $group->get('/visits', [CustomerFeedAction::class, 'visits']);
@@ -107,6 +109,8 @@ return function (App $app): void {
         $group->put('/properties/{id:[0-9]+}/images/order', [ManagePropertyImageAction::class, 'reorder']);
         $group->put('/properties/{id:[0-9]+}/images/{imageId:[0-9]+}/cover', [ManagePropertyImageAction::class, 'setCover']);
         $group->delete('/properties/{id:[0-9]+}/images/{imageId:[0-9]+}', [ManagePropertyImageAction::class, 'delete']);
+        $group->post('/properties/{id:[0-9]+}/brochure/pdf', [PropertyBrochureAction::class, 'pdf']);
+        $group->post('/properties/{id:[0-9]+}/brochure/send', [PropertyBrochureAction::class, 'send']);
 
         // Appuntamenti
         $group->get('/appointments', ListAppointmentsAction::class);

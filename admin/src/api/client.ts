@@ -48,6 +48,35 @@ export async function api<T = unknown>(
   return data as T
 }
 
+/** Come api(), ma restituisce il body binario (es. PDF generati dal server). */
+export async function apiBlob(
+  path: string,
+  options: { method?: string; body?: unknown } = {},
+): Promise<Blob> {
+  const { token, logout } = useAuthStore.getState()
+
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+  if (token) headers.Authorization = `Bearer ${token}`
+
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: options.method ?? 'GET',
+    headers,
+    body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+  })
+
+  if (res.status === 401) {
+    logout()
+    throw new ApiError(401, 'unauthorized', 'Sessione scaduta: effettua di nuovo il login.')
+  }
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}))
+    const err = (data as { error?: { code?: string; message?: string } }).error
+    throw new ApiError(res.status, err?.code ?? 'error', err?.message ?? 'Errore inatteso.')
+  }
+
+  return res.blob()
+}
+
 export function fileUrl(path: string | null): string | null {
   if (!path) return null
   if (path.startsWith('http')) return path

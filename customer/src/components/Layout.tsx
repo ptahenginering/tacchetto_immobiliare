@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { Home, CalendarCheck, HandCoins, Megaphone, MessageCircle, UserRound } from 'lucide-react'
+import { Home, CalendarCheck, HandCoins, Megaphone, MessageCircle, UserRound, Building2 } from 'lucide-react'
 import { RTMonogram } from '@/components/RTLogo'
+import { useSelectedProperty } from '@/hooks/useSelectedProperty'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
@@ -17,6 +18,7 @@ const NAV_ITEMS = [
  */
 export default function Layout() {
   const navigate = useNavigate()
+  const { properties, selectedId, setSelectedId } = useSelectedProperty()
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col bg-ivory md:max-w-2xl">
@@ -40,6 +42,26 @@ export default function Layout() {
           <UserRound size={22} strokeWidth={1.6} />
         </NavLink>
       </header>
+
+      {/* Selettore immobile: visibile solo per proprietari con più immobili */}
+      {properties.length > 1 && (
+        <div className="sticky top-[57px] z-10 flex items-center gap-2 border-b border-gold/20 bg-navy px-4 py-2">
+          <Building2 size={16} className="shrink-0 text-gold-light" strokeWidth={1.6} />
+          <select
+            value={selectedId ?? ''}
+            onChange={(e) => setSelectedId(Number(e.target.value))}
+            aria-label="Scegli l'immobile da visualizzare"
+            className="w-full appearance-none bg-transparent text-sm font-medium text-ivory outline-none"
+          >
+            {properties.map((p) => (
+              <option key={p.id} value={p.id} className="text-navy">
+                {p.title}
+                {p.city ? ` — ${p.city}` : ''}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <main className="flex-1 px-4 pb-24 pt-4">
         <Outlet />

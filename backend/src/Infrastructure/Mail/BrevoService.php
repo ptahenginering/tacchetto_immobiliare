@@ -27,20 +27,29 @@ final class BrevoService
     }
 
     /**
+     * @param array<int, array{name: string, content: string}> $attachments allegati (contenuto binario)
      * @throws RuntimeException se l'invio fallisce
      */
-    public function sendEmail(string $toEmail, string $subject, string $html): void
+    public function sendEmail(string $toEmail, string $subject, string $html, array $attachments = []): void
     {
         if (!$this->isConfigured()) {
             throw new RuntimeException('BREVO_API_KEY non configurata.');
         }
 
-        $payload = json_encode([
+        $body = [
             'sender' => ['email' => $this->fromEmail, 'name' => $this->fromName],
             'to' => [['email' => $toEmail]],
             'subject' => $subject,
             'htmlContent' => $html,
-        ], JSON_UNESCAPED_UNICODE);
+        ];
+        if ($attachments !== []) {
+            $body['attachment'] = array_map(
+                fn (array $a) => ['name' => $a['name'], 'content' => base64_encode($a['content'])],
+                $attachments
+            );
+        }
+
+        $payload = json_encode($body, JSON_UNESCAPED_UNICODE);
 
         $ch = curl_init(self::ENDPOINT);
         curl_setopt_array($ch, [

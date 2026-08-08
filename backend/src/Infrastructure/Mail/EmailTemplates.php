@@ -180,6 +180,27 @@ final class EmailTemplates
                     ),
                 ];
 
+            case 'scheda_immobile':
+                $propertyTitle = $this->e((string) ($vars['property_title'] ?? 'immobile'));
+                $customMessage = trim((string) ($vars['custom_message'] ?? ''));
+                $messageBlock = $customMessage !== ''
+                    ? '<p style="border-left:3px solid #C29B52;padding-left:14px;color:#16273F">' . nl2br($this->e($customMessage)) . '</p>'
+                    : '';
+                $greeting = $name !== '' ? "Gentile {$name}," : 'Gentile cliente,';
+                return [
+                    'subject' => "Scheda immobile: {$propertyTitle}",
+                    'html' => $this->layout(
+                        'Scheda immobile',
+                        "<p>{$greeting}</p>
+                         <p>in allegato trovi la scheda di presentazione dell'immobile
+                         <strong>{$propertyTitle}</strong> con foto, caratteristiche e descrizione completa.</p>
+                         {$messageBlock}
+                         <p>Per fissare una visita o per qualsiasi domanda sono a tua disposizione.</p>
+                         <p style=\"font-size:13px;color:#5C6B80\">Roberto Tacchetto — Real Estate Advisor ·
+                         <a href=\"tel:+393457771822\" style=\"color:#C29B52\">+39 345 7771822</a></p>"
+                    ),
+                ];
+
             default:
                 throw new InvalidArgumentException("Template email sconosciuto: {$templateKey}");
         }

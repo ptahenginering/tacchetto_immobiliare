@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { auth } from '@/api/client'
 import Layout from '@/components/Layout'
+import { PropertySelectionProvider } from '@/hooks/useSelectedProperty'
 import AccessPage from '@/pages/AccessPage'
 import LoginPage from '@/pages/LoginPage'
 import HomePage from '@/pages/HomePage'
@@ -35,7 +36,9 @@ export default function App() {
           <Route
             element={
               <RequireAuth>
-                <Layout />
+                <PropertySelectionProvider>
+                  <Layout />
+                </PropertySelectionProvider>
               </RequireAuth>
             }
           >
