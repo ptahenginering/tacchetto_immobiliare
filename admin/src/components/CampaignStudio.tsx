@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import QRCode from 'qrcode'
 import { jsPDF } from 'jspdf'
-import { Download, ImageDown, Megaphone, RefreshCw } from 'lucide-react'
+import { Download, ImageDown, ImagePlus, Megaphone, RefreshCw } from 'lucide-react'
 import { Field, inputCls } from '@/components/ui'
 
 /**
@@ -61,6 +61,16 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number)
   return lines
 }
 
+export type CampaignTemplate = 'classico' | 'foto'
+
+/** Disegna un'immagine a copertura (cover) con crop centrato. */
+function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, W: number, H: number) {
+  const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight)
+  const w = img.naturalWidth * scale
+  const h = img.naturalHeight * scale
+  ctx.drawImage(img, (W - w) / 2, (H - h) / 2, w, h)
+}
+
 /** Disegna la creatività su canvas. Layout parametrico: stesse proporzioni per social e volantino. */
 async function drawCreative(
   canvas: HTMLCanvasElement,
@@ -68,6 +78,8 @@ async function drawCreative(
   H: number,
   t: CreativeTexts,
   withBullets: boolean,
+  template: CampaignTemplate = 'classico',
+  bgImage: HTMLImageElement | null = null,
 ): Promise<void> {
   await document.fonts.ready
   canvas.width = W
@@ -77,12 +89,32 @@ async function drawCreative(
 
   const u = W / 1080 // unità di scala (design a 1080 di larghezza)
 
-  // Sfondo navy + cornice oro
-  ctx.fillStyle = NAVY_DEEP
-  ctx.fillRect(0, 0, W, H)
+  // Sfondo: navy pieno (classico) oppure foto caricata + velatura navy
+  // per garantire la leggibilità di testi e QR (fotografico)
+  if (template === 'foto' && bgImage) {
+    drawCover(ctx, bgImage, W, H)
+    const grad = ctx.createLinearGradient(0, 0, 0, H)
+    grad.addColorStop(0, 'rgba(14,27,46,.55)')
+    grad.addColorStop(0.45, 'rgba(14,27,46,.35)')
+    grad.addColorStop(1, 'rgba(14,27,46,.9)')
+    ctx.fillStyle = grad
+    ctx.fillRect(0, 0, W, H)
+  } else {
+    ctx.fillStyle = NAVY_DEEP
+    ctx.fillRect(0, 0, W, H)
+  }
+
+  // Cornice oro
   ctx.strokeStyle = 'rgba(194,155,82,.5)'
   ctx.lineWidth = 3 * u
   ctx.strokeRect(36 * u, 36 * u, W - 72 * u, H - 72 * u)
+
+  // Sul template foto un'ombra leggera aiuta i testi sopra l'immagine
+  if (template === 'foto' && bgImage) {
+    ctx.shadowColor = 'rgba(14,27,46,.75)'
+    ctx.shadowBlur = 14 * u
+    ctx.shadowOffsetY = 2 * u
+  }
 
   ctx.textAlign = 'center'
   let y = 150 * u
@@ -131,7 +163,10 @@ async function drawCreative(
     ctx.textAlign = 'center'
   }
 
-  // Card bianca con QR in basso
+  // Card bianca con QR in basso (senza ombra: il QR deve restare nitido e scansionabile)
+  ctx.shadowColor = 'transparent'
+  ctx.shadowBlur = 0
+  ctx.shadowOffsetY = 0
   const qrData = await QRCode.toDataURL(QR_LANDING, {
     errorCorrectionLevel: 'M',
     margin: 1,
@@ -189,28 +224,55 @@ function downloadBlob(blob: Blob, filename: string) {
 
 export default function CampaignStudio() {
   const [texts, setTexts] = useState<CreativeTexts>(DEFAULTS)
+  const [template, setTemplate] = useState<CampaignTemplate>('classico')
+  const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null)
+  const [bgName, setBgName] = useState('')
   const [busy, setBusy] = useState(false)
   const socialRef = useRef<HTMLCanvasElement>(null)
   const flyerRef = useRef<HTMLCanvasElement>(null)
+  const bgInputRef = useRef<HTMLInputElement>(null)
 
   const render = useCallback(async () => {
     setBusy(true)
     try {
       // Post social 1080×1350 (portrait Instagram/Facebook)
-      if (socialRef.current) await drawCreative(socialRef.current, 1080, 1350, texts, false)
+      if (socialRef.current) await drawCreative(socialRef.current, 1080, 1350, texts, false, template, bgImage)
       // Volantino A5 a 300 dpi (148×210 mm → 1748×2480 px)
-      if (flyerRef.current) await drawCreative(flyerRef.current, 1748, 2480, texts, true)
+      if (flyerRef.current) await drawCreative(flyerRef.current, 1748, 2480, texts, true, template, bgImage)
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Anteprima non generata')
     } finally {
       setBusy(false)
     }
-  }, [texts])
+  }, [texts, template, bgImage])
 
+  // Prima anteprima + rigenerazione automatica al cambio template/sfondo
+  // (per le modifiche ai testi c'è il pulsante "Aggiorna anteprime")
   useEffect(() => {
     void render()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [template, bgImage])
+
+  function loadBackground(file: File) {
+    if (!file.type.startsWith('image/')) {
+      toast.error('Carica un file immagine (JPG, PNG o WEBP)')
+      return
+    }
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => {
+      setBgImage(img)
+      setBgName(file.name)
+      setTemplate('foto')
+      toast.success('Sfondo caricato: anteprime aggiornate')
+      // NB: niente revoke dell'objectURL finché l'immagine serve per il re-render
+    }
+    img.onerror = () => {
+      URL.revokeObjectURL(url)
+      toast.error('Immagine non leggibile')
+    }
+    img.src = url
+  }
 
   function downloadJpg(canvas: HTMLCanvasElement | null, filename: string) {
     canvas?.toBlob(
@@ -248,6 +310,52 @@ export default function CampaignStudio() {
         Grafiche in stile sito vetrina con QR code integrato: chi lo inquadra atterra sul form contatti e il lead
         arriva nel gestionale con fonte «QR code». Scarica il JPG per i social o il PDF A5 per la stampa.
       </p>
+
+      {/* Scelta template + sfondo personalizzato */}
+      <div className="mt-3 flex flex-wrap items-end gap-3">
+        <Field label="Template">
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setTemplate('classico')}
+              className={template === 'classico' ? 'rt-btn-primary' : 'rt-btn-outline'}
+            >
+              Classico navy
+            </button>
+            <button
+              type="button"
+              onClick={() => (bgImage ? setTemplate('foto') : bgInputRef.current?.click())}
+              className={template === 'foto' ? 'rt-btn-primary' : 'rt-btn-outline'}
+            >
+              Fotografico
+            </button>
+          </div>
+        </Field>
+        <Field label="Immagine di sfondo (template fotografico)">
+          <div className="flex items-center gap-2">
+            <button type="button" onClick={() => bgInputRef.current?.click()} className="rt-btn-outline">
+              <ImagePlus size={14} /> {bgImage ? 'Cambia immagine' : 'Carica immagine'}
+            </button>
+            {bgName && <span className="max-w-[180px] truncate text-xs text-muted">{bgName}</span>}
+            <input
+              ref={bgInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files?.[0]
+                if (f) loadBackground(f)
+                e.target.value = ''
+              }}
+            />
+          </div>
+        </Field>
+      </div>
+      {template === 'foto' && !bgImage && (
+        <p className="mt-1 text-xs text-warning">
+          Carica un'immagine di sfondo per il template fotografico: finché manca, l'anteprima usa lo sfondo navy.
+        </p>
+      )}
 
       <div className="mt-3 grid gap-3 md:grid-cols-2">
         <Field label="Titolo">
