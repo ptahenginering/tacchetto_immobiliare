@@ -36,7 +36,7 @@ final class CustomerFeedAction extends Action
             'SELECT id, visited_at, visitor_label, qualified, feedback_text, feedback_rating
              FROM visits
              WHERE property_id = :pid AND visible_to_owner = true
-             ORDER BY visited_at DESC'
+             ORDER BY created_at DESC'
         );
         $stmt->execute(['pid' => $pid]);
 
@@ -171,14 +171,26 @@ final class CustomerFeedAction extends Action
         return $this->json($response, ['data' => $stmt->fetchAll()]);
     }
 
-    /** Immobile del proprietario loggato (owner-scoping a livello di query). */
+    /**
+     * Immobile del proprietario loggato (owner-scoping a livello di query).
+     * Con ?property_id= seleziona uno specifico immobile del proprietario
+     * (multiproprietà); default: il più recente.
+     */
     private function propertyIdForOwner(Request $request): ?int
     {
         $uid = (int) $request->getAttribute('auth_uid');
-        $stmt = $this->pdo->prepare(
-            'SELECT id FROM properties WHERE owner_user_id = :uid AND agency_id = 1 ORDER BY created_at DESC LIMIT 1'
-        );
-        $stmt->execute(['uid' => $uid]);
+        $requestedId = (int) ($request->getQueryParams()['property_id'] ?? 0);
+
+        $sql = 'SELECT id FROM properties WHERE owner_user_id = :uid AND agency_id = 1';
+        $params = ['uid' => $uid];
+        if ($requestedId > 0) {
+            $sql .= ' AND id = :pid';
+            $params['pid'] = $requestedId;
+        }
+        $sql .= ' ORDER BY created_at DESC LIMIT 1';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
         $row = $stmt->fetch();
         return $row ? (int) $row['id'] : null;
     }

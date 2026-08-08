@@ -203,7 +203,7 @@ function ProposalModal({
               required
               type="number"
               min="1"
-              step="500"
+              step="any"
               value={form.amount}
               onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
               className={inputCls}
