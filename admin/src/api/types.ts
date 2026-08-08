@@ -11,7 +11,7 @@ export interface Lead {
   last_name: string
   email: string | null
   phone: string | null
-  request_type: 'vendere' | 'ereditato' | 'altro'
+  request_type: 'vendere' | 'ereditato' | 'perizia' | 'altro'
   message: string | null
   source: 'sito' | 'qr' | 'social' | 'referral' | 'altro'
   status: 'nuovo' | 'contattato' | 'appuntamento' | 'incarico' | 'perso'
@@ -149,6 +149,7 @@ export const SOURCE_LABELS: Record<Lead['source'], string> = {
 export const REQUEST_TYPE_LABELS: Record<Lead['request_type'], string> = {
   vendere: 'Vuole vendere',
   ereditato: 'Immobile ereditato',
+  perizia: 'Perizia',
   altro: 'Altro',
 }
 

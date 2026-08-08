@@ -20,7 +20,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  */
 final class CreateLeadAction extends Action
 {
-    private const ALLOWED_REQUEST_TYPES = ['vendere', 'ereditato', 'altro'];
+    private const ALLOWED_REQUEST_TYPES = ['vendere', 'ereditato', 'perizia', 'altro'];
     private const ALLOWED_SOURCES = ['sito', 'qr', 'social', 'referral', 'altro'];
     private const MAX_PER_IP = 5;          // massimo 5 invii
     private const WINDOW_MINUTES = 60;     // per ora
