@@ -1,6 +1,9 @@
 # RT CASA LIVE — API (deployata in public_html/api/)
 RewriteEngine On
 
+# Internal redirect già sul front controller: stop (evita il loop di riscrittura)
+RewriteRule ^public/index\.php$ - [L]
+
 # Blocca l'accesso diretto a config, migrazioni, log, bin, vendor
 RewriteRule ^(config|migrations|logs|bin|tests|vendor/composer)($|/) - [F,L]
 RewriteRule ^vendor/.*\.(md|json|lock|dist|txt)$ - [F,L]
@@ -8,8 +11,10 @@ RewriteRule ^vendor/.*\.(md|json|lock|dist|txt)$ - [F,L]
 # Endpoint pubblici diretti in public/
 RewriteRule ^public/(run-migrations\.php)$ public/$1 [L]
 
-# Tutto il resto → front controller Slim
-RewriteCond %{REQUEST_URI} !^.*/public/
+# Tutto il resto → front controller Slim. Nota: anche gli URL /api/public/*
+# (es. la rotta POST /public/leads) vanno riscritti nonostante condividano
+# il prefisso con la cartella fisica public/ — una vecchia RewriteCond che
+# escludeva */public/* faceva rispondere 404 a SiteGround sui lead del sito.
 RewriteRule ^(.*)$ public/index.php [QSA,L]
 
 # Le risposte API non vanno mai in cache (incl. cache SiteGround)
